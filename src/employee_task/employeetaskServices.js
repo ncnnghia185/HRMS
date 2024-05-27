@@ -7,11 +7,11 @@ const { dbConfig } = require("../../config/dbConnect");
 
 const insertEmployeeTask = async (data) => {
   const value = validateEmployeeTask(data);
-  await dbConfig.query("INSERT INTO employee_task VALUES($1,$2)", [
-    value.task_id,
-    value.user_id,
-  ]);
-  return await selectOneTaskEmployee(value.task_id);
+  const result = await dbConfig.query(
+    "INSERT INTO employee_task VALUES($1,$2) RETURNING *",
+    [value.task_id, value.user_id]
+  );
+  return result.rows[0];
 };
 
 const selectOneTaskEmployee = async (taskId) => {
@@ -30,11 +30,11 @@ const selectAllEmployeeTask = async () => {
 const updateEmployeeTask = async (data, id) => {
   checkUpdateData(data);
   const condition = parseInt(id);
-  await dbConfig.query(
-    "UPDATE employee_task SET task_id = $1, user_id=$2 WHERE task_id = $3",
+  const result = await dbConfig.query(
+    "UPDATE employee_task SET task_id = $1, user_id=$2 WHERE task_id = $3 RETURNING *",
     [data.task_id, data.user_id, condition]
   );
-  return await selectOneTaskEmployee(condition);
+  return result.rows[0];
 };
 const deleteEmployeeTask = async (taskId) => {
   const condition = parseInt(taskId);

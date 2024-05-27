@@ -43,11 +43,11 @@ const selectAllEmployees = async () => {
 const updateOneEmployee = async (data, id) => {
   checkUpdateData(data);
   const condition = parseInt(id);
-  await dbConfig.query(
-    "UPDATE employees SET address = $1,email = $2,phone = $3, role_id = $4 WHERE id = $5",
+  const result = await dbConfig.query(
+    "UPDATE employees SET address = $1,email = $2,phone = $3, role_id = $4 WHERE id = $5 RETURNING *",
     [data.address, data.email, data.phone, data.role_id, condition]
   );
-  return await selectOneEmployee(condition);
+  return result.rows[0];
 };
 
 const deleteOneEmployee = async (id) => {
