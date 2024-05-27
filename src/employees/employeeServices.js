@@ -8,8 +8,8 @@ const { dbConfig } = require("../../config/dbConnect");
 const insertNewEmployee = async (data) => {
   const value = validateEmployee(data);
 
-  await dbConfig.query(
-    "INSERT INTO employees(id,address,birthday,email,name,phone,role_id) VALUES($1,$2,$3,$4,$5,$6,$7) ",
+  const result = await dbConfig.query(
+    "INSERT INTO employees(id,address,birthday,email,name,phone,role_id) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *",
     [
       value.id,
       value.address,
@@ -21,7 +21,7 @@ const insertNewEmployee = async (data) => {
     ]
   );
 
-  return await selectOneEmployee(value.id);
+  return result.rows[0];
 };
 
 const selectOneEmployee = async (id) => {

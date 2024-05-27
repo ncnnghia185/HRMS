@@ -7,11 +7,11 @@ const { dbConfig } = require("../../config/dbConnect");
 
 const insertPosition = async (data) => {
   const value = validatePosition(data);
-  await dbConfig.query("INSERT INTO positions(id,name) VALUES ($1,LOWER($2))", [
-    value.id,
-    value.name,
-  ]);
-  return await selectOnePosition(value.id);
+  const result = await dbConfig.query(
+    "INSERT INTO positions(id,name) VALUES ($1,LOWER($2)) RETURNING *",
+    [value.id, value.name]
+  );
+  return result.rows[0];
 };
 
 const selectOnePosition = async (id) => {
@@ -34,11 +34,11 @@ const updateOnePosition = async (data, id) => {
   checkUpdateData(data);
   const value = Object.values(data).toString();
   const condition = parseInt(id);
-  await dbConfig.query("UPDATE positions SET name = $1 WHERE id = $2", [
-    value,
-    condition,
-  ]);
-  return await selectOnePosition(condition);
+  const result = await dbConfig.query(
+    "UPDATE positions SET name = $1 WHERE id = $2 RETURNING *",
+    [value, condition]
+  );
+  return result.rows[0];
 };
 const deleteOnePosition = async (id) => {
   const condition = parseInt(id);

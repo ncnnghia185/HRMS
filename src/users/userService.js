@@ -14,11 +14,11 @@ const insertUser = async (data) => {
   const value = validateUser(data);
   const hashed = hashPassword(value.password);
   value.password = hashed;
-  await dbConfig.query(
-    "INSERT INTO users(id,email,password,role_id,username) VALUES ($1,$2,$3,$4,$5)",
+  const result = await dbConfig.query(
+    "INSERT INTO users(id,email,password,role_id,username) VALUES ($1,$2,$3,$4,$5) RETURNING *",
     [value.id, value.email, value.password, value.role_id, value.username]
   );
-  return await selectOneUser(value.id);
+  return result.rows[0];
 };
 
 const saveRefreshTokenToCookie = (response, refreshToken) => {
@@ -83,12 +83,12 @@ const selectAllUser = async () => {
 
 const updateUser = async (data, id) => {
   checkUpdateData(data);
-  await dbConfig.query(
-    "UPDATE users SET email = $1, username = $2 WHERE id = $3",
+  const result = await dbConfig.query(
+    "UPDATE users SET email = $1, username = $2 WHERE id = $3 RETURNING *",
     [data.email, data.username, id]
   );
-  const updatedUser = await selectOneUser(id);
-  return updatedUser;
+
+  return result.rows[0];
 };
 
 const deleteUser = async (id) => {

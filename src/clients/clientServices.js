@@ -7,8 +7,8 @@ const { dbConfig } = require("../../config/dbConnect");
 
 const insertNewClient = async (data) => {
   const value = validateClient(data);
-  await dbConfig.query(
-    "INSERT INTO clients(id,company,email,name,phone,position,projects) VALUES($1,$2,$3,$4,$5,$6,$7)",
+  const result = await dbConfig.query(
+    "INSERT INTO clients(id,company,email,name,phone,position,projects) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *",
     [
       value.id,
       value.company,
@@ -19,7 +19,7 @@ const insertNewClient = async (data) => {
       value.projects,
     ]
   );
-  return await selectOneClient(value.id);
+  return result.rows[0];
 };
 
 const selectOneClient = async (id) => {
@@ -40,8 +40,8 @@ const selectAllClients = async () => {
 const updateOneClient = async (data, id) => {
   const condition = parseInt(id);
   checkUpdateData(data);
-  await dbConfig.query(
-    "UPDATE clients SET  company=$1,email=$2,name=$3,phone=$4,position=$5,projects=$6 WHERE id = $7 ",
+  const result = await dbConfig.query(
+    "UPDATE clients SET  company=$1,email=$2,name=$3,phone=$4,position=$5,projects=$6 WHERE id = $7 RETURNING *",
     [
       data.company,
       data.email,
@@ -53,7 +53,7 @@ const updateOneClient = async (data, id) => {
     ]
   );
 
-  return await selectOneClient(condition);
+  return result.rows[0];
 };
 const deleteOneClient = async (id) => {
   const condition = parseInt(id);

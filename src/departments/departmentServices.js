@@ -7,11 +7,11 @@ const { validateDepartment } = require("../../utils/validateInput");
 
 const insertDepartment = async (data) => {
   const value = validateDepartment(data);
-  await dbConfig.query(
-    "INSERT INTO departments(id,name) VALUES ($1,LOWER($2))",
+  const result = await dbConfig.query(
+    "INSERT INTO departments(id,name) VALUES ($1,LOWER($2)) RETURNING *",
     [value.id, value.name]
   );
-  return await selectOneDepartment(value.name);
+  return result.rows[0];
 };
 
 const selectOneDepartment = async (name) => {
@@ -32,11 +32,11 @@ const selectAllDepartment = async () => {
 
 const updateOneDepartment = async (data, name) => {
   checkUpdateData(data);
-  await dbConfig.query("UPDATE departments SET name = $1 WHERE name = $2", [
-    data,
-    name,
-  ]);
-  return await selectOneDepartment(name);
+  const result = await dbConfig.query(
+    "UPDATE departments SET name = $1 WHERE name = $2  RETURNING *",
+    [data, name]
+  );
+  return result.rows[0];
 };
 
 const deleteOneDepartment = async (name) => {
