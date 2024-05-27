@@ -38,6 +38,15 @@ const selectAllUsers = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await userService.updateUser(req.body, id);
+    successResponse(res, user);
+  } catch (error) {
+    failResponse(res, error);
+  }
+};
 const deleteOneUser = async (req, res) => {
   try {
     const { id } = req.params;
@@ -93,4 +102,5 @@ module.exports = {
   changePassword,
   selectDepartment,
   logoutUser,
+  updateUser,
 };

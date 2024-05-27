@@ -12,7 +12,8 @@ const {
 
 const insertUser = async (data) => {
   const value = validateUser(data);
-  const hashed = hashPassword(value.password);
+  const hashed = await hashPassword(value.password);
+
   value.password = hashed;
   const result = await dbConfig.query(
     "INSERT INTO users(id,email,password,role_id,username) VALUES ($1,$2,$3,$4,$5) RETURNING *",

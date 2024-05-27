@@ -26,6 +26,12 @@ router.get(
   userController.selectAllUsers
 );
 router.get("/:id", verifyAccessToken, userController.selectUser);
+router.put(
+  "/update/:id",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  userController.updateUser
+);
 router.delete(
   "/:id",
   verifyAccessToken,
