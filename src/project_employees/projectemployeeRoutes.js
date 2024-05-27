@@ -1,31 +1,51 @@
-const { verifyAccessToken, isAdmin } = require("../../middlewares/verifyToken");
+const {
+  verifyAccessToken,
+  checkRole,
+} = require("../../middlewares/verifyToken");
 const router = require("express").Router();
 const projectemployeeController = require("./projectemployeeControllers");
 
 router.post(
-  "/add/:id",
+  "/add",
   verifyAccessToken,
+
   projectemployeeController.createProjectEmployee
 );
 
-router.get("/all", projectemployeeController.selectProjectEmployees);
-router.get("/count", projectemployeeController.countProjectEmployeeJoined);
+router.get(
+  "/all",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  projectemployeeController.selectProjectEmployees
+);
+router.get(
+  "/count",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  projectemployeeController.countProjectEmployeeJoined
+);
 router.get(
   "/count-employees",
+  verifyAccessToken,
+  checkRole("ADMIN"),
   projectemployeeController.countEmployeesJoinProject
 );
-router.get("/:id", projectemployeeController.selectEmployeeProjects);
+router.get(
+  "/:id",
+  verifyAccessToken,
+  projectemployeeController.selectEmployeeProjects
+);
 
 router.put(
   "/update/:id",
   verifyAccessToken,
-  isAdmin,
+  checkRole("ADMIN"),
   projectemployeeController.updateProjectEmployee
 );
 router.delete(
   "/:id",
   verifyAccessToken,
-  isAdmin,
+  checkRole("ADMIN"),
   projectemployeeController.deleteProjectEmployee
 );
 module.exports = router;

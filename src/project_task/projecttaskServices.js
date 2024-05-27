@@ -7,8 +7,8 @@ const { dbConfig } = require("../../config/dbConnect");
 
 const insertNewProjectTask = async (data) => {
   const value = validateProjectTask(data);
-  await dbConfig.query(
-    "INSERT INTO project_task(id,description,name,project_id,task_status_id) VALUES($1,$2,$3,$4,$5)",
+  const result = await dbConfig.query(
+    "INSERT INTO project_task(id,description,name,project_id,task_status_id) VALUES($1,$2,$3,$4,$5) RETURNING *",
     [
       value.id,
       value.description,
@@ -17,7 +17,7 @@ const insertNewProjectTask = async (data) => {
       value.task_status_id,
     ]
   );
-  return await selectOneProjectTask(value.id);
+  return result.rows[0];
 };
 
 const selectOneProjectTask = async (id) => {
@@ -41,12 +41,12 @@ const selectAllProjectTasks = async () => {
 const updateOneProjectTask = async (data, id) => {
   const condition = parseInt(id);
   checkUpdateData(data);
-  await dbConfig.query(
-    "UPDATE project_task SET description=$1,name=$2,task_status_id=$3 WHERE id = $4 ",
+  const result = await dbConfig.query(
+    "UPDATE project_task SET description=$1,name=$2,task_status_id=$3 WHERE id = $4 RETURNING * ",
     [data.description, data.name, data.task_status_id, condition]
   );
 
-  return await selectOneProjectTask(condition);
+  return result.rows[0];
 };
 const deleteOneProjectTask = async (id) => {
   const condition = parseInt(id);

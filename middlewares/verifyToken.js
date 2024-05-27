@@ -30,63 +30,26 @@ const verifyAccessToken = async (req, res, next) => {
   }
 };
 
-const isAdmin = async (req, res, next) => {
-  try {
-    const command = `SELECT r.name AS role_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id WHERE u.role_id = $1 `;
-    const value = [req.user?.role_id];
-    const result = await dbConfig.query(command, value);
-
-    if (result.rows[0]?.role_name.toLowerCase() !== "admin") {
+const ROLES = {
+  ADMIN: 1,
+  PM: 2,
+  MEMBER: 3,
+};
+const checkRole = (roleKey) => {
+  return (req, res, next) => {
+    const role = ROLES[roleKey];
+    if (req.user.role_id !== role) {
       return res.status(403).json({
         success: false,
-        message: "REQUIRED ADMIN ROLE",
+        message: "Access denied : Insufficient permissions",
       });
     }
+
     next();
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  };
 };
-
-const isPM = async (req, res, next) => {
-  try {
-    const command = `SELECT r.name AS role_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id WHERE u.role_id = $1 `;
-    const value = [req.user?.role_id];
-    const result = await dbConfig.query(command, value);
-
-    if (result.rows[0]?.role_name.toLowerCase() !== "pm") {
-      return res.status(403).json({
-        success: false,
-        message: "REQUIRED PM ROLE",
-      });
-    }
-    next();
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
-const isMember = async (req, res, next) => {
-  try {
-    const command = `SELECT r.name AS role_name FROM users AS u INNER JOIN roles AS r ON u.role_id = r.id WHERE u.role_id = $1 `;
-    const value = [req.user?.role_id];
-    const result = await dbConfig.query(command, value);
-
-    if (result.rows[0]?.role_name.toLowerCase() !== "member") {
-      return res.status(403).json({
-        success: false,
-        message: "REQUIRED MEMBER ROLE",
-      });
-    }
-    next();
-  } catch (error) {
-    throw new Error(error.message);
-  }
-};
-
 module.exports = {
   verifyAccessToken,
-  isAdmin,
-  isPM,
-  isMember,
+  checkRole,
+  ROLES,
 };

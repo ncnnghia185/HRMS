@@ -1,9 +1,32 @@
 const router = require("express").Router();
 const positionController = require("./positionControllers");
-const { verifyAccessToken } = require("../../middlewares/verifyToken");
-router.post("/add-position", positionController.createPosition);
-router.get("/all", positionController.getPositions);
-router.get("/:id", positionController.getPosition);
-router.put("/update/:id", positionController.updatePosition);
-router.delete("/:id", positionController.deletePosition);
+const {
+  verifyAccessToken,
+  checkRole,
+} = require("../../middlewares/verifyToken");
+router.post(
+  "/add-position",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  positionController.createPosition
+);
+router.get(
+  "/all",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  positionController.getPositions
+);
+router.get("/:id", verifyAccessToken, positionController.getPosition);
+router.put(
+  "/update/:id",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  positionController.updatePosition
+);
+router.delete(
+  "/:id",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  positionController.deletePosition
+);
 module.exports = router;

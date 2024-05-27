@@ -1,25 +1,34 @@
 const router = require("express").Router();
 const projectController = require("./projectControllers");
-const { verifyAccessToken, isAdmin } = require("../../middlewares/verifyToken");
+const {
+  verifyAccessToken,
+  checkRole,
+  ROLES,
+} = require("../../middlewares/verifyToken");
 
 router.post(
   "/add",
   verifyAccessToken,
-  isAdmin,
+  checkRole("ADMIN"),
   projectController.createProject
 );
 router.get(
   "/all",
   verifyAccessToken,
-  isAdmin,
+  checkRole("ADMIN"),
   projectController.selectProjects
 );
 router.get("/:id", verifyAccessToken, projectController.selectProject);
 router.put(
   "/update/:id",
   verifyAccessToken,
-  isAdmin,
+  checkRole("ADMIN"),
   projectController.updateProject
 );
-router.delete("/:id", projectController.deleteProject);
+router.delete(
+  "/:id",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  projectController.deleteProject
+);
 module.exports = router;

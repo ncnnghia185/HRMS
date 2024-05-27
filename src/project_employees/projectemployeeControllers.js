@@ -3,7 +3,8 @@ const projectemployeeService = require("./projectemployeeServices");
 
 const createProjectEmployee = async (req, res) => {
   try {
-    const { id } = req.params;
+    const id = req.user.id;
+
     const ProjectEmployee = await projectemployeeService.insertProjectEmployee(
       id,
       req.body

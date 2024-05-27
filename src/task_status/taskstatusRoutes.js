@@ -1,9 +1,31 @@
 const router = require("express").Router();
 const taskStatusController = require("./taskstatusControllers");
-const { verifyAccessToken } = require("../../middlewares/verifyToken");
-router.post("/add-taskstatus", taskStatusController.createTaskStatus);
-router.get("/all-taskstatus", taskStatusController.selectAllTaskStatus);
-router.get("/:id", taskStatusController.selectTaskStatus);
-router.put("/update/:id", taskStatusController.updateTaskStatus);
-router.delete("/:id", taskStatusController.deleteTaskStatus);
+const {
+  verifyAccessToken,
+  checkRole,
+} = require("../../middlewares/verifyToken");
+router.post(
+  "/add-taskstatus",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  taskStatusController.createTaskStatus
+);
+router.get(
+  "/all-taskstatus",
+  verifyAccessToken,
+  taskStatusController.selectAllTaskStatus
+);
+router.get("/:id", verifyAccessToken, taskStatusController.selectTaskStatus);
+router.put(
+  "/update/:id",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  taskStatusController.updateTaskStatus
+);
+router.delete(
+  "/:id",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  taskStatusController.deleteTaskStatus
+);
 module.exports = router;

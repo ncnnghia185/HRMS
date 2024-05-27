@@ -7,11 +7,11 @@ const { validateProject } = require("../../utils/validateInput");
 
 const insertNewProject = async (data) => {
   const value = validateProject(data);
-  await dbConfig.query(
-    "INSERT INTO projects(id,client_id,description,thumbnail,title) VALUES($1,$2,$3,$4,$5)",
+  const project = await dbConfig.query(
+    "INSERT INTO projects(id,client_id,description,thumbnail,title) VALUES($1,$2,$3,$4,$5) RETURNING *",
     [value.id, value.client_id, value.description, value.thumbnail, value.title]
   );
-  return await selectOneProject(value.id);
+  return project.rows[0];
 };
 
 const selectOneProject = async (id) => {
@@ -50,11 +50,11 @@ const updateOneProject = async (data, id) => {
       index++;
     }
   }
-  query += ` WHERE id = $${index}`;
+  query += ` WHERE id = $${index} RETURNING *`;
   values.push(condition);
-  await dbConfig.query(query, values);
+  const result = await dbConfig.query(query, values);
 
-  return await selectOneProject(condition);
+  return result.rows[0];
 };
 
 const deleteOneProject = async (id) => {

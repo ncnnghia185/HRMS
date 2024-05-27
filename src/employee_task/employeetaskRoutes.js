@@ -1,10 +1,35 @@
 const router = require("express").Router();
 const employeetaskController = require("./employeetaskControllers");
-const { verifyAccessToken } = require("../../middlewares/verifyToken");
+const {
+  verifyAccessToken,
+  checkRole,
+} = require("../../middlewares/verifyToken");
 
-router.post("/add", employeetaskController.createEmployeeTask);
-router.get("/all", employeetaskController.selectAllEmployeeTask);
-router.get("/:tId", employeetaskController.selectEmployeeTask);
-router.put("/update/:tId", employeetaskController.updateEmployeeTask);
-router.delete("/:tId", employeetaskController.deleteEmployeeTask);
+router.post(
+  "/add",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  employeetaskController.createEmployeeTask
+);
+router.get(
+  "/all",
+  verifyAccessToken,
+  employeetaskController.selectAllEmployeeTask
+);
+router.get(
+  "/:tId",
+  verifyAccessToken,
+  employeetaskController.selectEmployeeTask
+);
+router.put(
+  "/update/:tId",
+  verifyAccessToken,
+  employeetaskController.updateEmployeeTask
+);
+router.delete(
+  "/:tId",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  employeetaskController.deleteEmployeeTask
+);
 module.exports = router;

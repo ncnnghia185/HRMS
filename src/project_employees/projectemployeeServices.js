@@ -9,6 +9,7 @@ const { dbConfig } = require("../../config/dbConnect");
 const insertProjectEmployee = async (userId, data) => {
   const value = validateProjectEmployee(data);
   // Check role of userId
+
   const currentUser = await dbConfig.query(
     "SELECT r.name FROM employees e JOIN roles r ON e.role_id = r.id WHERE e.id = $1",
     [userId]
@@ -24,12 +25,11 @@ const insertProjectEmployee = async (userId, data) => {
   const newMemberRole = newMember.rows[0].name.toLowerCase();
 
   if (permissionAddMember(currentRole, newMemberRole)) {
-    await dbConfig.query("INSERT INTO project_employees VALUES($1,$2,$3)", [
-      value.project_id,
-      value.project_role_id,
-      value.user_id,
-    ]);
-    return await selectOneProjectEmployee(value.user_id);
+    const result = await dbConfig.query(
+      "INSERT INTO project_employees VALUES($1,$2,$3) RETURNING *",
+      [value.project_id, value.project_role_id, value.user_id]
+    );
+    return result.rows[0];
   } else {
     throw new Error(
       `You don't have permission to add '${newMemberRole.toUpperCase()}' to this project`
@@ -72,7 +72,7 @@ const updateProjectEmployee = async (data, id) => {
   checkUpdateData(data);
   const condition = parseInt(id);
   await dbConfig.query(
-    "UPDATE project_employees SET project_id = $1 WHERE user_id = $2",
+    "UPDATE project_employees SET project_id = $1 WHERE user_id = $2 RETURNING *",
     [data, condition]
   );
   return await selectOneProjectEmployee(condition);

@@ -7,11 +7,11 @@ const { dbConfig } = require("../../config/dbConnect");
 
 const insertTaskStatus = async (data) => {
   const value = validateTaskStatus(data);
-  await dbConfig.query(
-    "INSERT INTO task_status(id,name) VALUES ($1,LOWER($2))",
+  const result = await dbConfig.query(
+    "INSERT INTO task_status(id,name) VALUES ($1,LOWER($2)) RETURNING *",
     [value.id, value.name]
   );
-  return await selectOneTaskStatus(value.id);
+  return result.rows[0];
 };
 
 const selectOneTaskStatus = async (id) => {
@@ -36,11 +36,11 @@ const updataOneTaskStatus = async (data, id) => {
   checkUpdateData(data);
   const value = Object.values(data).toString();
   const condition = parseInt(id);
-  await dbConfig.query("UPDATE task_status SET name = $1 WHERE id = $2", [
-    value,
-    condition,
-  ]);
-  return await selectOneTaskStatus(condition);
+  const result = await dbConfig.query(
+    "UPDATE task_status SET name = $1 WHERE id = $2 RETURNING *",
+    [value, condition]
+  );
+  return result.rows[0];
 };
 
 const deleteOneTaskStatus = async (id) => {
