@@ -44,7 +44,7 @@ const saveRefreshTokenToCookie = (response, refreshToken) => {
 
 const login = async (data, response) => {
   // Validate data
-  if (!data.email || !data.password)
+  if ((!data.email && !data.name) || !data.password)
     throw new Error("Missing email or password");
 
   // Check user exist
