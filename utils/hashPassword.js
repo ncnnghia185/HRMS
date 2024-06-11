@@ -7,7 +7,10 @@ const hashPassword = async (password) => {
 
 const comparePassword = async (newPassword, oldPassword) => {
   const isMatch = await bcrypt.compare(newPassword, oldPassword);
-  return isMatch ? true : "New password must differ from old password";
+  if (isMatch) {
+    throw new Error("New password must differ from old password");
+  }
+  return true;
 };
 module.exports = {
   hashPassword,

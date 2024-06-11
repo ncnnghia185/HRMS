@@ -1,0 +1,641 @@
+openapi: 3.0.0
+info:
+  title: HRMS API Document
+  version: 1.0.0
+servers:
+  - url: "http://localhost:5000"
+
+tags:
+  - name: Users APIs
+paths:
+
+  /api/users/add-user:
+    post:
+      summary: Insert a new user
+      description: Insert a new user into the system. Requires admin role.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: User ID
+                name:
+                  type: string
+                  description: User's name
+                address:
+                  type: string
+                  description: User's address
+                birthday:
+                  type: string
+                  example: "1990-02-22"
+                  description: User's birthday
+                email:
+                  type: string
+                  format: email
+                  description: User's email address
+                phone:
+                  type: string
+                  description: User's phone number
+                role_id:
+                  type: integer
+                  description: ID of the user's role
+                password:
+                  type: string
+                  description: User's password
+                department_id:
+                  type: integer
+                  description: ID of the user's department
+              required:
+                - id
+                - name
+                - address
+                - birthday   
+                - email
+                - phone
+                - role_id
+                - password
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+        '400':
+          description: Failed .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed.
+                  error:
+                    type: string
+      security:
+        - bearerToken: []
+
+      tags:
+        - Users APIs
+
+  /api/users/login:
+    post:
+      summary: Authenticate user and generate access token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+                - username
+                - password
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      accessToken:
+                        type: string
+                      user:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                          name:
+                            type: string
+                          address:
+                            type: string
+                          birthday:
+                            type: string
+                          email:
+                            type: string
+                            format: email
+                          phone:
+                            type: string
+                          role_id:
+                            type: integer
+                          department_id:
+                            type: integer
+        '400':
+          description: Failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+       
+      tags:
+        - Users APIs
+  
+  /api/users/all-user:
+    get:
+      summary: Get information of all users
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Successfully .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          description: User ID
+                        name:
+                          type: string
+                          description: User's name
+                        address:
+                          type: string
+                          description: User's address
+                        birthday:
+                          type: string
+                          description: User's birthday
+                        email:
+                          type: string
+                          format: email
+                          description: User's email address
+                        phone:
+                          type: string
+                          description: User's phone number
+                        role_id:
+                          type: integer
+                          description: ID of the user's role
+                        department_id:
+                          type: integer
+                          description: ID of the user's department
+        '400':
+          description: Failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+
+      tags:
+        - Users APIs
+
+
+  /api/users/{id}:
+    get:
+      summary: Get information of one user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: User's name
+                      address:
+                        type: string
+                        description: User's address
+                      birthday:
+                        type: string
+                        description: User's birthday
+                      email:
+                        type: string
+                        format: email
+                        description: User's email address
+                      phone:
+                        type: string
+                        description: User's phone number
+                      role_id:
+                        type: integer
+                        description: ID of the user's role
+                      department_id:
+                        type: integer
+                        description: ID of the user's department
+                      
+        '400':
+          description: Failed. 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+       
+      tags:
+        - Users APIs
+
+    delete:
+      summary: Delete user by Id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          shema:
+            type: integer
+      security:
+        - bearerToken: []      
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+          
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+      tags:
+        - Users APIs
+  
+  /api/users/update/{id}:
+    put:
+      summary: Update user information
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                
+                name:
+                  type: string
+                address:
+                  type: string
+                birthday:
+                  type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+              required:
+                - name
+                - address
+                - birthday
+                - email
+                - phone
+                
+                 
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      address:
+                        type: string
+                      birthday:
+                        type: string
+                      email:
+                        type: string
+                      phone:
+                        type: string
+                      role_id:
+                        type: string
+                      department_id:
+                        type: string
+        '400':
+          description: Failed. 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+          
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+      tags:
+        - Users APIs
+  
+  /api/users/change-password/{id}:
+    put:
+      summary: User change password
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                new_password:
+                  type: string
+                  description: New password
+                  
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+        '400':
+          description: Invalid request or password mismatch
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example:  Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string         
+      tags:
+        - Users APIs
+  
+
+
+    
+          
+
+components:
+  securitySchemes:
+    bearerToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

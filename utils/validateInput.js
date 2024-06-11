@@ -14,7 +14,10 @@ exports.validateUser = (data) => {
     id: Joi.number().required(),
     password: Joi.string().min(8).required(),
     role_id: Joi.number().required(),
-    username: Joi.string().required(),
+    name: Joi.string().required(),
+    address: Joi.string().required(),
+    birthday: Joi.date().required(),
+    phone: Joi.string().required(),
   });
 
   return validateData(schema, data);

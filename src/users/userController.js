@@ -60,8 +60,8 @@ const deleteOneUser = async (req, res) => {
 const changePassword = async (req, res) => {
   try {
     const { id } = req.params;
-    const { password } = req.body;
-    await userService.userChangePassword(password, id);
+    const { new_password } = req.body;
+    await userService.userChangePassword(new_password, id);
     successResponse(res);
   } catch (error) {
     failResponse(res, error);

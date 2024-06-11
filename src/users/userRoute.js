@@ -5,16 +5,24 @@ const {
   checkRole,
   ROLES,
 } = require("../../middlewares/verifyToken");
+
 router.post("/login", userController.loginUser);
+
 router.get("/logout", userController.logoutUser);
+
 router.post(
   "/add-user",
   verifyAccessToken,
   checkRole("ADMIN"),
   userController.createNewUser
 );
-router.post("/change-password/:id", userController.changePassword);
-router.post(
+router.put(
+  "/change-password/:id",
+  verifyAccessToken,
+  userController.changePassword
+);
+
+router.put(
   "/select-department",
   verifyAccessToken,
   userController.selectDepartment
@@ -22,10 +30,11 @@ router.post(
 router.get(
   "/all-users",
   verifyAccessToken,
-  checkRole(),
+  checkRole("ADMIN"),
   userController.selectAllUsers
 );
 router.get("/:id", verifyAccessToken, userController.selectUser);
+
 router.put(
   "/update/:id",
   verifyAccessToken,
