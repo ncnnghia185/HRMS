@@ -570,6 +570,8 @@ paths:
           required: true
           schema:
             type: integer
+      security:
+        - bearerToken: []
       requestBody:
         required: true
         content:
