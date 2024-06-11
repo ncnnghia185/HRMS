@@ -10,6 +10,7 @@ const {
   generateRefreshToken,
 } = require("../../middlewares/token");
 const bcrypt = require("bcrypt");
+const { updateQuery } = require("../../utils/handleQuery");
 
 const insertUser = async (data) => {
   const value = validateUser(data);
@@ -48,10 +49,8 @@ const login = async (data, response) => {
 
   // Check user exist
   const user = await dbConfig.query(
-    // "SELECT * FROM users WHERE email = $1 OR username = $2",
-    // "SELECT u.* FROM users u JOIN employees e ON u.email = e.email WHERE e.email = $1 OR u.username = $2",
     "SELECT * FROM employees WHERE email = $1 OR name = $2",
-    [data.email, data.username]
+    [data.email, data.name]
   );
 
   if (user.rows.length === 0) {
@@ -97,12 +96,10 @@ const selectAllUser = async () => {
 
 const updateUser = async (data, id) => {
   checkUpdateData(data);
-  const result = await dbConfig.query(
-    `UPDATE employees SET , name = $1, address = $2, birthday = $3, email = $4, phone = $5, WHERE id = $6 
-    RETURNING id, email, name, phone, address, birthday, role_id, department_id`,
-    [data.name, data.address, data.birthday, data.email, data.phone, id]
-  );
 
+  const baseQuery = `UPDATE employees SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];
 };
 

@@ -7,24 +7,28 @@ const {
 } = require("../../middlewares/verifyToken");
 
 router.post(
-  "/add",
+  "/add-project",
   verifyAccessToken,
   checkRole("ADMIN"),
   projectController.createProject
 );
+
 router.get(
-  "/all",
+  "/all-projects",
   verifyAccessToken,
   checkRole("ADMIN"),
   projectController.selectProjects
 );
+
 router.get("/:id", verifyAccessToken, projectController.selectProject);
+
 router.put(
   "/update/:id",
   verifyAccessToken,
   checkRole("ADMIN"),
   projectController.updateProject
 );
+
 router.delete(
   "/:id",
   verifyAccessToken,

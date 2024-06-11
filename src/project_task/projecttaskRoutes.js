@@ -5,12 +5,16 @@ const {
 const router = require("express").Router();
 const projecttaskController = require("./projecttaskController");
 router.post(
-  "/add",
+  "/add-task",
   verifyAccessToken,
   checkRole("ADMIN"),
   projecttaskController.createProjectTask
 );
-router.get("/all", verifyAccessToken, projecttaskController.getProjectTasks);
+router.get(
+  "/all-tasks",
+  verifyAccessToken,
+  projecttaskController.getProjectTasks
+);
 router.get("/:id", verifyAccessToken, projecttaskController.getProjectTask);
 router.put(
   "/update/:id",

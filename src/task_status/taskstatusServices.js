@@ -4,6 +4,7 @@ const {
 } = require("../../utils/handleQuery");
 const { validateTaskStatus } = require("../../utils/validateInput");
 const { dbConfig } = require("../../config/dbConnect");
+const { updateQuery } = require("../../utils/handleQuery");
 
 const insertTaskStatus = async (data) => {
   const value = validateTaskStatus(data);
@@ -34,12 +35,10 @@ const selectAllTaskStatus = async () => {
 
 const updataOneTaskStatus = async (data, id) => {
   checkUpdateData(data);
-  const value = Object.values(data).toString();
-  const condition = parseInt(id);
-  const result = await dbConfig.query(
-    "UPDATE task_status SET name = $1 WHERE id = $2 RETURNING *",
-    [value, condition]
-  );
+
+  const baseQuery = `UPDATE task_status SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];
 };
 

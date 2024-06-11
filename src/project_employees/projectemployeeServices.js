@@ -5,7 +5,7 @@ const {
 } = require("../../utils/handleQuery");
 const { validateProjectEmployee } = require("../../utils/validateInput");
 const { dbConfig } = require("../../config/dbConnect");
-
+const { updateQuery } = require("../../utils/handleQuery");
 const insertProjectEmployee = async (userId, data) => {
   const value = validateProjectEmployee(data);
   // Check role of userId
@@ -70,12 +70,10 @@ const countProjectEmployeeJoined = async () => {
 
 const updateProjectEmployee = async (data, id) => {
   checkUpdateData(data);
-  const condition = parseInt(id);
-  await dbConfig.query(
-    "UPDATE project_employees SET project_id = $1 WHERE user_id = $2 RETURNING *",
-    [data, condition]
-  );
-  return await selectOneProjectEmployee(condition);
+  const baseQuery = `UPDATE projects SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
+  return result.rows[0];
 };
 
 const deleteProjectEmployee = async (id) => {

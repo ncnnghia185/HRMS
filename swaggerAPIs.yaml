@@ -7,8 +7,11 @@ servers:
 
 tags:
   - name: Users APIs
+  - name: Projects APIs
+  - name: Tasks APIs
 paths:
-
+  
+# User APIs
   /api/users/add-user:
     post:
       summary: Insert a new user
@@ -87,6 +90,32 @@ paths:
                     example: Failed.
                   error:
                     type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                 
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+               
       security:
         - bearerToken: []
 
@@ -244,9 +273,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: Failed
-                  error:
-                    type: string
+                
         '403':
           description: Forbidden. User does not have the required permissions.
           content:
@@ -259,9 +286,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: Failed
-                  error:
-                    type: string
+                  
 
       tags:
         - Users APIs
@@ -345,9 +370,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: "Failed"
-                  error:
-                    type: string
+
         '403':
           description: Forbidden. User does not have the required permissions.
           content:
@@ -360,9 +383,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: "Failed"
-                  error:
-                    type: string
+                  
        
       tags:
         - Users APIs
@@ -418,9 +439,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: Failed
-                  error:
-                    type: string
+                  
           
         '403':
           description: Forbidden. User does not have the required permissions.
@@ -434,9 +453,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: Failed
-                  error:
-                    type: string
+                 
       tags:
         - Users APIs
   
@@ -468,13 +485,6 @@ paths:
                   format: email
                 phone:
                   type: string
-              required:
-                - name
-                - address
-                - birthday
-                - email
-                - phone
-                
                  
       security:
         - bearerToken: []
@@ -508,9 +518,9 @@ paths:
                       phone:
                         type: string
                       role_id:
-                        type: string
+                        type: integer
                       department_id:
-                        type: string
+                        type: integer
         '400':
           description: Failed. 
           content:
@@ -538,9 +548,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: "Failed"
-                  error:
-                    type: string
+                  
           
         '403':
           description: Forbidden. User does not have the required permissions.
@@ -554,9 +562,7 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: "Failed"
-                  error:
-                    type: string
+                    
       tags:
         - Users APIs
   
@@ -624,16 +630,897 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: "Failed"
-                  error:
-                    type: string         
+                          
       tags:
         - Users APIs
   
 
 
-    
+# Projects APIs
+
+  /api/projects/add-project:
+    post:
+      summary: Insert a new project
+      description: Insert a new project. Requires admin role.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Project id
+                client_id:
+                  type: integer
+                  description: Client id
+                description:
+                  type: string
+                thumbnail:
+                  type: string
+                title:
+                  type: string
+                priority_id:
+                  type: integer
+              required:
+                - id
+                - client_id
+                - description
+                - thumbnail   
+                - title
+                - priority_id
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: Project id
+                      client_id:
+                        type: integer
+                        description: Client id
+                      description:
+                        type: string
+                      thumbnail:
+                        type: string
+                      title:
+                        type: string
+                      priority_id:
+                        type: integer
+        '400':
+          description: Failed .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed.
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+      security:
+        - bearerToken: []
+
+      tags:
+        - Projects APIs
+
+  /api/projects/{id}:
+    get:
+      summary: "Get information of one project"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      description:
+                        type: string
+                      thumbnail:
+                        type: string
+                      title:
+                        type: string
+                      client_id:
+                        type: integer
+                      priority_id:
+                        type: integer
+                      name:
+                        type: string
+                        description: "Project Priority's name"
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+        '403':
+          description: "Forbidden. User does not have the required permissions."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+      tags:
+        - "Projects APIs"
+
+
+    delete:
+      summary: Delete project by Id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          shema:
+            type: integer
+      security:
+        - bearerToken: []      
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                  
           
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                 
+      tags:
+        - Projects APIs
+
+  /api/projects/all-projects:
+    get:
+      summary: Get information of all projects
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Successfully .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        description:
+                          type: string
+                        thumbnail:
+                          type: string
+                        client_id:
+                          type: integer
+                        priority_id:
+                          type: integer
+                        name:
+                          type: string
+                          description: Project Priority's name
+                        
+        '400':
+          description: Failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                  
+
+      tags:
+        - Projects APIs
+
+  /api/projects/update/{id}:
+    put:
+      summary: Update project information
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                thumbnail:
+                  type: string
+                title:
+                  type: string
+                client_id:
+                  type: integer
+                priority_id:
+                  type: integer
+                 
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      description:
+                        type: string
+                      thumbnail:
+                        type: string
+                      title:
+                        type: string
+                      client_id:
+                        type: integer
+                      priority_id:
+                        type: integer
+                    
+        '400':
+          description: Failed. 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                  
+          
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    
+      tags:
+        - Projects APIs
+
+
+
+# Tasks APIs
+  /api/project-task/add-task:
+    post:
+      summary: Insert a new Project's Tasks
+      description: Insert a new project's tasks. Requires admin role.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  description: Task id
+                description:
+                  type: string
+                name:
+                  type: string
+                project_id:
+                  type: string
+                task_status_id:
+                  type: string
+              required:
+                - id
+                - description
+                - name
+                - project_id   
+                - task_status_id
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        description: Task id
+                      description:
+                        type: string
+                      name:
+                        type: string
+                      project_id:
+                        type: integer
+                      task_status_id:
+                        type: integer
+        '400':
+          description: Failed .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed.
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+      security:
+        - bearerToken: []
+
+      tags:
+        - Tasks APIs
+
+  /api/project-task/all-tasks:
+    get:
+      summary: Get information of all project's tasks
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Successfully .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        description:
+                          type: string
+                        name:
+                          type: string
+                        project_id:
+                          type: integer
+                        task_status_id:
+                          type: integer
+                        
+        '400':
+          description: Failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                  
+
+      tags:
+        - Tasks APIs
+
+  /api/project-task/{id}:
+    get:
+      summary: "Get information of one project's tasks"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      description:
+                        type: string
+                      name:
+                        type: string
+                      priority_id:
+                        type: integer
+                      task_status_id:
+                        type: integer
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+        '403':
+          description: "Forbidden. User does not have the required permissions."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+      tags:
+        - Tasks APIs
+
+
+    delete:
+      summary: Delete project's task by Id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          shema:
+            type: integer
+      security:
+        - bearerToken: []      
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+        '400':
+          description: Failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                  
+          
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                 
+      tags:
+        - Tasks APIs
+
+  /api/project-task/update/{id}:
+    put:
+      summary: Update project's task information
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                description:
+                  type: string
+                name:
+                  type: string
+                task_status_id:
+                  type: integer
+                 
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      description:
+                        type: string
+                      name:
+                        type: string
+                      project_id:
+                        type: integer
+                      task_status_id:
+                        type: integer
+                    
+        '400':
+          description: Failed. 
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                  
+          
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    
+      tags:
+        - Tasks APIs
 
 components:
   securitySchemes:

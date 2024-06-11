@@ -4,7 +4,7 @@ const {
 } = require("../../utils/handleQuery");
 const { validateEmployee } = require("../../utils/validateInput");
 const { dbConfig } = require("../../config/dbConnect");
-
+const { updateQuery } = require("../../utils/handleQuery");
 const insertNewEmployee = async (data) => {
   const value = validateEmployee(data);
 
@@ -42,11 +42,9 @@ const selectAllEmployees = async () => {
 
 const updateOneEmployee = async (data, id) => {
   checkUpdateData(data);
-  const condition = parseInt(id);
-  const result = await dbConfig.query(
-    "UPDATE employees SET address = $1,email = $2,phone = $3, role_id = $4 WHERE id = $5 RETURNING *",
-    [data.address, data.email, data.phone, data.role_id, condition]
-  );
+  const baseQuery = `UPDATE projects SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];
 };
 

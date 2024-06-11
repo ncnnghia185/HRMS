@@ -33,8 +33,8 @@ const updateTaskStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const updatedStatus = await taskstatusService.updataOneTaskStatus(
-      req.body,
-      id
+      id,
+      req.body
     );
     successResponse(res, updatedStatus);
   } catch (error) {

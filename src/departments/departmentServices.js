@@ -4,6 +4,7 @@ const {
   checkUpdateData,
 } = require("../../utils/handleQuery");
 const { validateDepartment } = require("../../utils/validateInput");
+const { updateQuery } = require("../../utils/handleQuery");
 
 const insertDepartment = async (data) => {
   const value = validateDepartment(data);
@@ -32,10 +33,9 @@ const selectAllDepartment = async () => {
 
 const updateOneDepartment = async (data, name) => {
   checkUpdateData(data);
-  const result = await dbConfig.query(
-    "UPDATE departments SET name = $1 WHERE name = $2  RETURNING *",
-    [data, name]
-  );
+  const baseQuery = `UPDATE projects SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];
 };
 

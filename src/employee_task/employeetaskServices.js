@@ -4,6 +4,7 @@ const {
 } = require("../../utils/handleQuery");
 const { validateEmployeeTask } = require("../../utils/validateInput");
 const { dbConfig } = require("../../config/dbConnect");
+const { updateQuery } = require("../../utils/handleQuery");
 
 const insertEmployeeTask = async (data) => {
   const value = validateEmployeeTask(data);
@@ -29,11 +30,9 @@ const selectAllEmployeeTask = async () => {
 };
 const updateEmployeeTask = async (data, id) => {
   checkUpdateData(data);
-  const condition = parseInt(id);
-  const result = await dbConfig.query(
-    "UPDATE employee_task SET task_id = $1, user_id=$2 WHERE task_id = $3 RETURNING *",
-    [data.task_id, data.user_id, condition]
-  );
+  const baseQuery = `UPDATE projects SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];
 };
 const deleteEmployeeTask = async (taskId) => {

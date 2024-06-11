@@ -4,6 +4,7 @@ const {
 } = require("../../utils/handleQuery");
 const { validateClient } = require("../../utils/validateInput");
 const { dbConfig } = require("../../config/dbConnect");
+const { updateQuery } = require("../../utils/handleQuery");
 
 const insertNewClient = async (data) => {
   const value = validateClient(data);
@@ -38,20 +39,10 @@ const selectAllClients = async () => {
 };
 
 const updateOneClient = async (data, id) => {
-  const condition = parseInt(id);
   checkUpdateData(data);
-  const result = await dbConfig.query(
-    "UPDATE clients SET  company=$1,email=$2,name=$3,phone=$4,position=$5,projects=$6 WHERE id = $7 RETURNING *",
-    [
-      data.company,
-      data.email,
-      data.name,
-      data.phone,
-      data.position,
-      data.projects,
-      condition,
-    ]
-  );
+  const baseQuery = `UPDATE projects SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
 
   return result.rows[0];
 };

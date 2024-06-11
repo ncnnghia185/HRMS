@@ -4,7 +4,7 @@ const {
   checkUpdateData,
 } = require("../../utils/handleQuery");
 const { dbConfig } = require("../../config/dbConnect");
-
+const { updateQuery } = require("../../utils/handleQuery");
 const insertPosition = async (data) => {
   const value = validatePosition(data);
   const result = await dbConfig.query(
@@ -32,12 +32,9 @@ const selectAllPositions = async () => {
 
 const updateOnePosition = async (data, id) => {
   checkUpdateData(data);
-  const value = Object.values(data).toString();
-  const condition = parseInt(id);
-  const result = await dbConfig.query(
-    "UPDATE positions SET name = $1 WHERE id = $2 RETURNING *",
-    [value, condition]
-  );
+  const baseQuery = `UPDATE projects SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];
 };
 const deleteOnePosition = async (id) => {

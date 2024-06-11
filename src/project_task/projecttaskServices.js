@@ -4,6 +4,7 @@ const {
 } = require("../../utils/handleQuery");
 const { validateProjectTask } = require("../../utils/validateInput");
 const { dbConfig } = require("../../config/dbConnect");
+const { updateQuery } = require("../../utils/handleQuery");
 
 const insertNewProjectTask = async (data) => {
   const value = validateProjectTask(data);
@@ -39,12 +40,10 @@ const selectAllProjectTasks = async () => {
 };
 
 const updateOneProjectTask = async (data, id) => {
-  const condition = parseInt(id);
   checkUpdateData(data);
-  const result = await dbConfig.query(
-    "UPDATE project_task SET description=$1,name=$2,task_status_id=$3 WHERE id = $4 RETURNING * ",
-    [data.description, data.name, data.task_status_id, condition]
-  );
+  const baseQuery = `UPDATE projects SET `;
+  const sqlQuery = updateQuery(baseQuery, id, data);
+  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
 
   return result.rows[0];
 };
