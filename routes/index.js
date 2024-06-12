@@ -9,6 +9,7 @@ const projecttaskRoutes = require("../src/project_task/projecttaskRoutes");
 const projectemployeeRoutes = require("../src/project_employees/projectemployeeRoutes");
 const employeetaskRoutes = require("../src/employee_task/employeetaskRoutes");
 const projectStatusRoutes = require("../src/project_status/projectstatusRoutes");
+const rolesRoutes = require("../src/roles/rolesRoutes");
 const initWebRoutes = (app) => {
   app.use("/api/users", userRoutes);
   app.use("/api/departments", departmentRoutes);
@@ -21,6 +22,7 @@ const initWebRoutes = (app) => {
   app.use("/api/project-employee", projectemployeeRoutes);
   app.use("/api/employee-task", employeetaskRoutes);
   app.use("/api/project-status", projectStatusRoutes);
+  app.use("/api/roles", rolesRoutes);
 };
 
 module.exports = initWebRoutes;

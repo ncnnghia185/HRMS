@@ -9,6 +9,7 @@ tags:
   - name: Users APIs
   - name: Projects APIs
   - name: Tasks APIs
+  - name: Roles APIs
 paths:
   
 # User APIs
@@ -197,7 +198,7 @@ paths:
       tags:
         - Users APIs
   
-  /api/users/all-user:
+  /api/users/all-users:
     get:
       summary: Get information of all users
       security:
@@ -1521,6 +1522,158 @@ paths:
                     
       tags:
         - Tasks APIs
+
+
+# Roles APIs
+  /api/roles/all-roles:
+    get:
+      summary: Get information of all roles
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: Successfully .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        name:
+                          type: string
+                        
+                          
+        '400':
+          description: Failed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                  
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    
+
+      tags:
+        - Roles APIs
+
+  /api/roles/{id}:
+    get:
+      summary: "Get information of one role"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      name:
+                        type: string
+                      
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+        '403':
+          description: "Forbidden. User does not have the required permissions."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+      tags:
+        - Roles APIs
 
 components:
   securitySchemes:
