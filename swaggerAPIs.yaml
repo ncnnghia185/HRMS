@@ -4288,8 +4288,6 @@ paths:
                       properties:
                         task_id:
                           type: integer
-                        name:
-                          type: string
                         user_id:
                           type: integer
         '400':
