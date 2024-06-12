@@ -2293,26 +2293,36 @@ paths:
                     example: false
                   message:
                     type: string
-        
+      
       tags:
         - Project_Employee APIs   
 
      delete:
-      summary: Delete employee from all projects
+      summary: Delete a user from a project
+      description: Deletes a specific user from a project.
       parameters:
-        - name: id
+        - name: projectId
           in: path
           required: true
-          shema:
+          description: ID of the project
+          schema:
             type: integer
-          description: 
-            type: string
-            description: Employee's id
       security:
-        - bearerToken: []      
+        - bearerToken: []  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uId:
+                  type: integer
+              required:
+                - uId
       responses:
         '200':
-          description: Successfully
+          description: "Successfully"
           content:
             application/json:
               schema:
@@ -2323,9 +2333,9 @@ paths:
                     example: true
                   message:
                     type: string
-                    example: Success
+                    example: "Success"
         '400':
-          description: Failed
+          description: "Failed."
           content:
             application/json:
               schema:
@@ -2336,11 +2346,11 @@ paths:
                     example: false
                   message:
                     type: string
-                    example: Failed
+                    example: "Failed"
                   error:
                     type: string
         '401':
-          description: Required Authentication. Access token is missing or invalid.
+          description: "Required Authentication. Access token is missing or invalid."
           content:
             application/json:
               schema:
@@ -2351,8 +2361,6 @@ paths:
                     example: false
                   message:
                     type: string
-                  
-          
         '403':
           description: Forbidden. User does not have the required permissions.
           content:
@@ -2364,12 +2372,108 @@ paths:
                     type: boolean
                     example: false
                   message:
-                    type: string
-                 
+                    type: string 
       tags:
-        - Project_Employee APIs    
+        - Project_Employee APIs      
 
+  /api/project-employee/update/{id}:
+    put:
+      summary: Update project_role_id of a user in a specific project
+      description: Updates the project role ID of a specific user in a specific project.
+      security:
+        - bearerToken: []  
+      parameters:
+        - name: projectId
+          in: path
+          required: true
+          description: ID of the project
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                project_role_id:
+                  type: integer
+                  description: New project_role_id 
+                user_id:
+                  type: integer
+                  description: id of user need change project role id 
+              required:
+                - project_role_id
+                - user_id
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        project_id:
+                          type: integer
+                        project_role_id:
+                          type: integer
+                        user_id:
+                          type: integer
+                      
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+        
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string 
 
+      tags:
+        - Project_Employee APIs  
 # Clients APIs
   /api/clients/add-client:
      post:
@@ -4319,6 +4423,84 @@ paths:
                     type: string
       tags:
         - Employee_Task APIs
+
+    delete:
+      summary: Delete a user from a task
+      description: Deletes a specific user from a  task.
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: ID of the task
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                uId:
+                  type: integer
+              required:
+                - uId
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string 
+      tags:
+        - Employee_Task APIs
+
 
   /api/employee-task/all:
     get:

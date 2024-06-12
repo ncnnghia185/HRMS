@@ -30,16 +30,18 @@ const selectAllEmployeeTask = async () => {
 };
 const updateEmployeeTask = async (data, id) => {
   checkUpdateData(data);
-  const baseQuery = `UPDATE projects SET `;
+  const baseQuery = `UPDATE employee_task SET `;
   const sqlQuery = updateQuery(baseQuery, id, data);
   const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];
 };
-const deleteEmployeeTask = async (taskId) => {
-  const condition = parseInt(taskId);
-  await dbConfig.query("DELETE FROM employee_task WHERE task_id =$1", [
-    condition,
-  ]);
+const deleteEmployeeTask = async (taskId, userId) => {
+  const parseTaskId = parseInt(taskId);
+  const parseUserId = parseInt(userId);
+  await dbConfig.query(
+    "DELETE FROM employee_task WHERE task_id =$1 AND user_id = $2",
+    [parseTaskId, parseUserId]
+  );
 };
 module.exports = {
   insertEmployeeTask,

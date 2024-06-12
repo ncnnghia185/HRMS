@@ -53,21 +53,25 @@ const selectAllProjectEmployee = async () => {
   return result.rows;
 };
 
-const updateProjectEmployee = async (data, id) => {
+const updateProjectEmployee = async (data, projectId) => {
   checkUpdateData(data);
+  const parsePrjId = parseInt(projectId);
+  const parseUserId = parseInt(data.user_id);
 
   const result = await dbConfig.query(
-    `UPDATE project_employees SET user_id = $1,project_role_id = $2 WHERE project_id = $3 RETURNING *`,
-    [data.user_id, data.project_role_id, id]
+    `UPDATE project_employees SET project_role_id = $1 WHERE project_id = $2 AND user_id = $3 RETURNING *`,
+    [data.project_role_id, parsePrjId, parseUserId]
   );
   return result.rows[0];
 };
 
-const deleteProjectEmployee = async (id) => {
-  const condition = parseInt(id);
-  await dbConfig.query("DELETE FROM project_employees WHERE user_id = $1", [
-    condition,
-  ]);
+const deleteProjectEmployee = async (projectId, userId) => {
+  const parsePrjId = parseInt(projectId);
+  const parseUserId = parseInt(userId);
+  await dbConfig.query(
+    "DELETE FROM project_employees WHERE project_id = $1 AND user_id = $2",
+    [parsePrjId, parseUserId]
+  );
 };
 module.exports = {
   insertProjectEmployee,
