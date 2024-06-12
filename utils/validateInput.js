@@ -10,14 +10,15 @@ const validateData = (schema, data) => {
 // validate user data
 exports.validateUser = (data) => {
   const schema = Joi.object().keys({
-    email: Joi.string().email().required(),
     id: Joi.number().required(),
+    email: Joi.string().email().required(),
     password: Joi.string().min(8).required(),
     role_id: Joi.number().required(),
     name: Joi.string().required(),
     address: Joi.string().required(),
     birthday: Joi.date().required(),
     phone: Joi.string().required(),
+    department_id: Joi.number(),
   });
 
   return validateData(schema, data);

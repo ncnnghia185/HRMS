@@ -16,10 +16,9 @@ const insertUser = async (data) => {
   const value = validateUser(data);
   const hashed = await hashPassword(value.password);
 
-  value.password = hashed;
   const result = await dbConfig.query(
     `INSERT INTO employees (id, name, address, birthday, email, phone, role_id, password, department_id) 
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`,
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) `,
     [
       value.id,
       value.name,
@@ -28,7 +27,7 @@ const insertUser = async (data) => {
       value.email,
       value.phone,
       value.role_id,
-      value.password,
+      hashed,
       value.department_id,
     ]
   );

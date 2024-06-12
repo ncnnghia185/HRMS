@@ -3,7 +3,6 @@ const userController = require("./userController");
 const {
   verifyAccessToken,
   checkRole,
-  ROLES,
 } = require("../../middlewares/verifyToken");
 
 router.post("/login", userController.loginUser);
