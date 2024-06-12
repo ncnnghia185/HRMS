@@ -21,7 +21,7 @@ const selectOneTaskEmployee = async (taskId) => {
     [taskId]
   );
   checkExistResult(result.rows);
-  return result.rows[0];
+  return result.rows;
 };
 
 const selectAllEmployeeTask = async () => {

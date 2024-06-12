@@ -4167,9 +4167,233 @@ paths:
       tags:
         - Task_Status APIs
 
+# Employee_Task APIs
+  /api/employee-task/add-user:
+    post:
+      summary: Insert a new user to task
+      description: Insert a new task status. Requires admin role.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                task_id:
+                  type: integer
+                  description: task  id
+                user_id:
+                  type: integer
+                  description: employee id
+              required:
+                - task_id
+                - user_id
+      responses:
+        '200':
+          description: Successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Success
+                  data:
+                    type: object
+                    properties:
+                      task_id:
+                        type: integer
+                      user_id:
+                        type: string
+        '400':
+          description: Failed .
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: Failed.
+                  error:
+                    type: string
+        '401':
+          description: Required Authentication. Access token is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+      security:
+        - bearerToken: []
 
+      tags:
+        - Employee_Task APIs
 
+  /api/employee-task/{id}:
+    get:
+      summary: "Get all employees of one task"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Task's id
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        task_id:
+                          type: integer
+                        name:
+                          type: string
+                        user_id:
+                          type: integer
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+      tags:
+        - Employee_Task APIs
 
+  /api/employee-task/all:
+    get:
+      summary: "Get all information"
+      
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        task_id:
+                          type: integer
+                        name:
+                          user_id: integer
+                      
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string   
+      tags:
+        - Employee_Task APIs 
+# Employee_Task APIs
 components:
   securitySchemes:
     bearerToken:

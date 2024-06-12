@@ -6,7 +6,7 @@ const {
 } = require("../../middlewares/verifyToken");
 
 router.post(
-  "/add",
+  "/add-user",
   verifyAccessToken,
   checkRole("ADMIN"),
   employeetaskController.createEmployeeTask
