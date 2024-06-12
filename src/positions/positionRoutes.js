@@ -11,7 +11,7 @@ router.post(
   positionController.createPosition
 );
 router.get(
-  "/all",
+  "/all-positions",
   verifyAccessToken,
   checkRole("ADMIN"),
   positionController.getPositions

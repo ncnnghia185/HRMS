@@ -5,18 +5,23 @@ const {
   checkRole,
 } = require("../../middlewares/verifyToken");
 router.post(
-  "/add",
+  "/add-client",
   verifyAccessToken,
   checkRole("ADMIN"),
   clientController.createClient
 );
 router.get(
-  "/all",
+  "/all-clients",
   verifyAccessToken,
   checkRole("ADMIN"),
   clientController.selectClients
 );
-router.get("/:id", verifyAccessToken, clientController.selectClient);
+router.get(
+  "/:id",
+  verifyAccessToken,
+  checkRole("ADMIN"),
+  clientController.selectClient
+);
 router.put(
   "/update/:id",
   verifyAccessToken,
