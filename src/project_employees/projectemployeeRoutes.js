@@ -6,7 +6,7 @@ const router = require("express").Router();
 const projectemployeeController = require("./projectemployeeControllers");
 
 router.post(
-  "/add",
+  "/add-employee",
   verifyAccessToken,
 
   projectemployeeController.createProjectEmployee
@@ -18,18 +18,7 @@ router.get(
   checkRole("ADMIN"),
   projectemployeeController.selectProjectEmployees
 );
-router.get(
-  "/count",
-  verifyAccessToken,
-  checkRole("ADMIN"),
-  projectemployeeController.countProjectEmployeeJoined
-);
-router.get(
-  "/count-employees",
-  verifyAccessToken,
-  checkRole("ADMIN"),
-  projectemployeeController.countEmployeesJoinProject
-);
+
 router.get(
   "/:id",
   verifyAccessToken,

@@ -15,12 +15,12 @@ const insertDepartment = async (data) => {
   return result.rows[0];
 };
 
-const selectOneDepartment = async (name) => {
+const selectOneDepartment = async (id) => {
   const result = await dbConfig.query(
-    "SELECT * FROM departments WHERE name = $1",
-    [name]
+    "SELECT * FROM departments WHERE id = $1",
+    [id]
   );
-  checkExistResult(result);
+  checkExistResult(result.rows);
   return result.rows[0];
 };
 
@@ -31,16 +31,16 @@ const selectAllDepartment = async () => {
   return result.rows;
 };
 
-const updateOneDepartment = async (data, name) => {
+const updateOneDepartment = async (data, id) => {
   checkUpdateData(data);
-  const baseQuery = `UPDATE projects SET `;
+  const baseQuery = `UPDATE departments SET `;
   const sqlQuery = updateQuery(baseQuery, id, data);
   const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];
 };
 
-const deleteOneDepartment = async (name) => {
-  await dbConfig.query("DELETE FROM departments WHERE name = $1", [name]);
+const deleteOneDepartment = async (id) => {
+  await dbConfig.query("DELETE FROM departments WHERE id = $1", [id]);
 };
 
 module.exports = {

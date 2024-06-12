@@ -53,26 +53,13 @@ const selectAllProjectEmployee = async () => {
   return result.rows;
 };
 
-const countEmployeesJoinProject = async () => {
-  const result = await dbConfig.query(
-    "SELECT project_id,COUNT(user_id) FROM project_employees GROUP BY project_id"
-  );
-  checkExistResult(result.rows);
-  return result.rows;
-};
-const countProjectEmployeeJoined = async () => {
-  const result = await dbConfig.query(
-    "SELECT user_id, COUNT(project_id) FROM project_employees GROUP BY user_id"
-  );
-  checkExistResult(result.rows);
-  return result.rows;
-};
-
 const updateProjectEmployee = async (data, id) => {
   checkUpdateData(data);
-  const baseQuery = `UPDATE projects SET `;
-  const sqlQuery = updateQuery(baseQuery, id, data);
-  const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
+
+  const result = await dbConfig.query(
+    `UPDATE project_employees SET user_id = $1,project_role_id = $2 WHERE project_id = $3 RETURNING *`,
+    [data.user_id, data.project_role_id, id]
+  );
   return result.rows[0];
 };
 
@@ -88,6 +75,4 @@ module.exports = {
   selectAllProjectEmployee,
   updateProjectEmployee,
   deleteProjectEmployee,
-  countProjectEmployeeJoined,
-  countEmployeesJoinProject,
 };

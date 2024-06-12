@@ -5,7 +5,7 @@ const {
   checkRole,
 } = require("../../middlewares/verifyToken");
 router.get(
-  "/all",
+  "/all-departments",
   verifyAccessToken,
   departmenrController.selectAllDepartments
 );

@@ -59,29 +59,10 @@ const deleteProjectEmployee = async (req, res) => {
   }
 };
 
-const countProjectEmployeeJoined = async (req, res) => {
-  try {
-    const data = await projectemployeeService.countProjectEmployeeJoined();
-    successResponse(res, data);
-  } catch (error) {
-    failResponse(res, error);
-  }
-};
-
-const countEmployeesJoinProject = async (req, res) => {
-  try {
-    const data = await projectemployeeService.countEmployeesJoinProject();
-    successResponse(res, data);
-  } catch (error) {
-    failResponse(res, error);
-  }
-};
 module.exports = {
   createProjectEmployee,
   selectEmployeeProjects,
   selectProjectEmployees,
   updateProjectEmployee,
   deleteProjectEmployee,
-  countProjectEmployeeJoined,
-  countEmployeesJoinProject,
 };
