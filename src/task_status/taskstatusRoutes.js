@@ -13,6 +13,7 @@ router.post(
 router.get(
   "/all-taskstatus",
   verifyAccessToken,
+  checkRole("ADMIN"),
   taskStatusController.selectAllTaskStatus
 );
 router.get("/:id", verifyAccessToken, taskStatusController.selectTaskStatus);
