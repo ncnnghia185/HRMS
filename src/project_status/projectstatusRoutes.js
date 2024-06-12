@@ -6,13 +6,13 @@ const {
 } = require("../../middlewares/verifyToken");
 
 router.post(
-  "/add",
+  "/add-status",
   verifyAccessToken,
   checkRole("ADMIN"),
   projectstatusController.createProjectStatus
 );
 router.get(
-  "/all",
+  "/all-status",
   verifyAccessToken,
   checkRole("ADMIN"),
   projectstatusController.selectAllProjectStatus

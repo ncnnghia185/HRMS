@@ -32,7 +32,7 @@ const selectAllPositions = async () => {
 
 const updateOnePosition = async (data, id) => {
   checkUpdateData(data);
-  const baseQuery = `UPDATE projects SET `;
+  const baseQuery = `UPDATE positions SET `;
   const sqlQuery = updateQuery(baseQuery, id, data);
   const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
   return result.rows[0];

@@ -34,7 +34,7 @@ const selectAllProjectStatus = async () => {
 const updateProjectStatus = async (id, data) => {
   checkUpdateData(data);
 
-  const baseQuery = `UPDATE projects SET `;
+  const baseQuery = `UPDATE project_status SET `;
   const sqlQuery = updateQuery(baseQuery, id, data);
   const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
 
