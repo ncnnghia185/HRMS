@@ -1285,13 +1285,14 @@ paths:
 
   /api/project-task/{id}:
     get:
-      summary: "Get information of one project's tasks"
+      summary: "Get information of one project's task"
       parameters:
         - name: id
           in: path
           required: true
           schema:
             type: integer
+          description: Id of one task 
       security:
         - bearerToken: []
       responses:
@@ -1317,7 +1318,7 @@ paths:
                         type: string
                       name:
                         type: string
-                      priority_id:
+                      project_id:
                         type: integer
                       task_status_id:
                         type: integer
@@ -1372,6 +1373,7 @@ paths:
           required: true
           shema:
             type: integer
+          description: Id of one task
       security:
         - bearerToken: []      
       responses:
@@ -1442,6 +1444,7 @@ paths:
           required: true
           schema:
             type: integer
+          description: Id of one task
       requestBody:
         required: true
         content:
@@ -1617,6 +1620,7 @@ paths:
           required: true
           schema:
             type: integer
+          description: Id of one role
       security:
         - bearerToken: []
       responses:
@@ -1842,6 +1846,7 @@ paths:
           required: true
           schema:
             type: integer
+          description: Id of one department
       security:
         - bearerToken: []
       responses:
@@ -1905,6 +1910,7 @@ paths:
           required: true
           shema:
             type: integer
+          description: Id of one departmet
       security:
         - bearerToken: []      
       responses:
@@ -1976,6 +1982,7 @@ paths:
           required: true
           schema:
             type: integer
+          description: Id of one department
       requestBody:
         required: true
         content:
@@ -4312,7 +4319,7 @@ paths:
                       task_id:
                         type: integer
                       user_id:
-                        type: string
+                        type: integer
         '400':
           description: Failed .
           content:
@@ -4361,7 +4368,7 @@ paths:
 
   /api/employee-task/{id}:
     get:
-      summary: "Get all employees of one task"
+      summary: "Get employee of one task"
       parameters:
         - name: id
           in: path
@@ -4386,14 +4393,13 @@ paths:
                     type: string
                     example: "Success"
                   data:
-                    type: array
-                    items:
-                      type: object
-                      properties:
-                        task_id:
-                          type: integer
-                        user_id:
-                          type: integer
+                    type: object
+                    
+                    properties:
+                      task_id:
+                        type: integer
+                      user_id:
+                        type: integer
         '400':
           description: "Failed."
           content:
@@ -4573,7 +4579,7 @@ paths:
                     type: string   
       tags:
         - Employee_Task APIs 
-# Employee_Task APIs
+
 components:
   securitySchemes:
     bearerToken:
