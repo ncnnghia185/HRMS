@@ -6,6 +6,7 @@ const initWebRoutes = require("./routes");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const swaggerUi = require("swagger-ui-express");
+
 const YAML = require("yamljs");
 const swaggerDocument = YAML.load("./swaggerAPIs.yaml");
 require("dotenv").config();

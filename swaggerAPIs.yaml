@@ -650,7 +650,7 @@ paths:
   /api/projects/add-project:
     post:
       summary: Insert a new project
-      description: Insert a new project. Requires admin role.
+      description: Insert a new project. Requires admin role.Upload  thumbnail project image to Cloudinary.
       requestBody:
         required: true
         content:
@@ -755,7 +755,8 @@ paths:
 
       tags:
         - Projects APIs
-
+      consumes:
+      - multipart/form-data 
   /api/projects/{id}:
     get:
       summary: "Get information of one project"

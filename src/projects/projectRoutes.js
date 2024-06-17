@@ -1,5 +1,16 @@
 const router = require("express").Router();
 const projectController = require("./projectControllers");
+const multer = require("multer");
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 const {
   verifyAccessToken,
   checkRole,
@@ -10,6 +21,7 @@ router.post(
   "/add-project",
   verifyAccessToken,
   checkRole("ADMIN"),
+  upload.single("thumbnail"),
   projectController.createProject
 );
 

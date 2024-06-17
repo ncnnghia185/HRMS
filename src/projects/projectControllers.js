@@ -1,9 +1,30 @@
 const { successResponse, failResponse } = require("../../utils/apiResponse");
 const projectService = require("./projectServices");
+const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 const createProject = async (req, res) => {
+  const { id, client_id, description, title } = req.body;
+  const thumbnailPath = req.file.path;
   try {
-    const project = await projectService.insertNewProject(req.body);
+    const uploadResult = await cloudinary.uploader.upload(thumbnailPath, {
+      folder: "project_thumbnail",
+    });
+    const thumbnailUrl = uploadResult.secure_url;
+    const newProjectData = {
+      id,
+      client_id,
+      description,
+      thumbnail: thumbnailUrl,
+      title,
+    };
+    const project = await projectService.insertNewProject(newProjectData);
     successResponse(res, project);
   } catch (error) {
     failResponse(res, error);
