@@ -654,7 +654,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
@@ -668,6 +668,8 @@ paths:
                   type: string
                 thumbnail:
                   type: string
+                  format: binary
+                  description: Thumbnail Image File
                 title:
                   type: string
                 priority_id:
@@ -706,6 +708,7 @@ paths:
                         type: string
                       thumbnail:
                         type: string
+                        description: URL of the thumbnail file
                       title:
                         type: string
                       priority_id:
