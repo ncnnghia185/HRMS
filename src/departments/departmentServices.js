@@ -9,8 +9,8 @@ const { updateQuery } = require("../../utils/handleQuery");
 const insertDepartment = async (data) => {
   const value = validateDepartment(data);
   const result = await dbConfig.query(
-    "INSERT INTO departments(id,name) VALUES ($1,LOWER($2)) RETURNING *",
-    [value.id, value.name]
+    "INSERT INTO departments(name) VALUES (LOWER($1)) RETURNING *",
+    [value.name]
   );
   return result.rows[0];
 };

@@ -9,8 +9,8 @@ const { updateQuery } = require("../../utils/handleQuery");
 const insertTaskStatus = async (data) => {
   const value = validateTaskStatus(data);
   const result = await dbConfig.query(
-    "INSERT INTO task_status(id,name) VALUES ($1,LOWER($2)) RETURNING *",
-    [value.id, value.name]
+    "INSERT INTO task_status(name) VALUES (LOWER($1)) RETURNING *",
+    [value.name]
   );
   return result.rows[0];
 };

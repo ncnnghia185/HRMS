@@ -1,4 +1,3 @@
-const { validateUser } = require("../../utils/validateInput");
 const userService = require("./userService");
 const { successResponse, failResponse } = require("../../utils/apiResponse");
 

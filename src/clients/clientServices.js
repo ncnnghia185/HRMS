@@ -9,9 +9,8 @@ const { updateQuery } = require("../../utils/handleQuery");
 const insertNewClient = async (data) => {
   const value = validateClient(data);
   const result = await dbConfig.query(
-    "INSERT INTO clients(id,company,email,name,phone,position,projects) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *",
+    "INSERT INTO clients(company,email,name,phone,position,projects) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
     [
-      value.id,
       value.company,
       value.email,
       value.name,

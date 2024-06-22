@@ -9,14 +9,8 @@ const { updateQuery } = require("../../utils/handleQuery");
 const insertNewProjectTask = async (data) => {
   const value = validateProjectTask(data);
   const result = await dbConfig.query(
-    "INSERT INTO project_task(id,description,name,project_id,task_status_id) VALUES($1,$2,$3,$4,$5) RETURNING *",
-    [
-      value.id,
-      value.description,
-      value.name,
-      value.project_id,
-      value.task_status_id,
-    ]
+    "INSERT INTO project_task(description,name,project_id,task_status_id) VALUES($1,$2,$3,$4) RETURNING *",
+    [value.description, value.name, value.project_id, value.task_status_id]
   );
   return result.rows[0];
 };

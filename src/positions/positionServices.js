@@ -8,8 +8,8 @@ const { updateQuery } = require("../../utils/handleQuery");
 const insertPosition = async (data) => {
   const value = validatePosition(data);
   const result = await dbConfig.query(
-    "INSERT INTO positions(id,name) VALUES ($1,LOWER($2)) RETURNING *",
-    [value.id, value.name]
+    "INSERT INTO positions(name) VALUES (LOWER($1)) RETURNING *",
+    [value.name]
   );
   return result.rows[0];
 };

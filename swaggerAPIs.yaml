@@ -32,9 +32,7 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  description: User ID
+               
                 name:
                   type: string
                   description: User's name
@@ -62,7 +60,6 @@ paths:
                   type: integer
                   description: ID of the user's department
               required:
-                - id
                 - name
                 - address
                 - birthday   
@@ -658,9 +655,6 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  description: Project id
                 client_id:
                   type: integer
                   description: Client id
@@ -675,12 +669,10 @@ paths:
                 priority_id:
                   type: integer
               required:
-                - id
                 - client_id
                 - description
                 - thumbnail   
                 - title
-                - priority_id
       responses:
         '200':
           description: Successfully.
@@ -1116,9 +1108,6 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  description: Task id
                 description:
                   type: string
                 name:
@@ -1128,7 +1117,6 @@ paths:
                 task_status_id:
                   type: string
               required:
-                - id
                 - description
                 - name
                 - project_id   
@@ -1704,13 +1692,10 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  description: Department id
                 name:
                   type: string
+                  description: Department name
               required:
-                - id
                 - name
       responses:
         '200':
@@ -2497,9 +2482,6 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  description: Client id
                 company:
                   type: string
                 email:
@@ -2514,7 +2496,6 @@ paths:
                 projects:
                   type: string
               required:
-                - id
                 - company
                 - email
                 - name
@@ -2964,13 +2945,9 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  description: Position id
                 name:
                   type: string
               required:
-                - id
                 - name
       responses:
         '200':
@@ -2992,7 +2969,6 @@ paths:
                       id:
                         type: integer
                       name:
-                        type: string
                         type: string
         '400':
           description: Failed .
@@ -3505,13 +3481,11 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  description: project status id
+                  
                 name:
                   type: string
+                  description: project status name
               required:
-                - id
                 - name
       responses:
         '200':
@@ -3905,13 +3879,10 @@ paths:
             schema:
               type: object
               properties:
-                id:
-                  type: integer
-                  description: task status id
                 name:
                   type: string
+                  description: task status name
               required:
-                - id
                 - name
       responses:
         '200':

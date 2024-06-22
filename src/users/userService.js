@@ -17,10 +17,9 @@ const insertUser = async (data) => {
   const hashed = await hashPassword(value.password);
 
   const result = await dbConfig.query(
-    `INSERT INTO employees (id, name, address, birthday, email, phone, role_id, password, department_id) 
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) `,
+    `INSERT INTO employees (name, address, birthday, email, phone, role_id, password, department_id) 
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8) `,
     [
-      value.id,
       value.name,
       value.address,
       value.birthday,

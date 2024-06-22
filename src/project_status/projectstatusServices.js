@@ -9,8 +9,8 @@ const { updateQuery } = require("../../utils/handleQuery");
 const insertProjectStatus = async (data) => {
   const value = validateProjectStatus(data);
   const res = await dbConfig.query(
-    "INSERT INTO project_status(id,name) VALUES ($1,$2) RETURNING *",
-    [value.id, value.name]
+    "INSERT INTO project_status(name) VALUES ($1) RETURNING *",
+    [value.name]
   );
 
   return res.rows[0];

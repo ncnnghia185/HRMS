@@ -10,7 +10,7 @@ cloudinary.config({
 });
 
 const createProject = async (req, res) => {
-  const { id, client_id, description, title } = req.body;
+  const { client_id, description, title } = req.body;
   const thumbnailPath = req.file.path;
   try {
     const uploadResult = await cloudinary.uploader.upload(thumbnailPath, {
@@ -18,7 +18,6 @@ const createProject = async (req, res) => {
     });
     const thumbnailUrl = uploadResult.secure_url;
     const newProjectData = {
-      id,
       client_id,
       description,
       thumbnail: thumbnailUrl,
