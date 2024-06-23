@@ -29,6 +29,15 @@ const getProjectTasks = async (req, res) => {
   }
 };
 
+const getAllProjectTasksOfUser = async (req, res) => {
+  try {
+    const { uId } = req.params;
+    const result = await projecttaskServices.selectProjectTaskOfUser(uId);
+    successResponse(res, result);
+  } catch (error) {
+    failResponse(res, error);
+  }
+};
 const updateProjectTask = async (req, res) => {
   try {
     const { id } = req.params;
@@ -52,6 +61,7 @@ module.exports = {
   createProjectTask,
   getProjectTask,
   getProjectTasks,
+  getAllProjectTasksOfUser,
   updateProjectTask,
   deleteProjectTask,
 };

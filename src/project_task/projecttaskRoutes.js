@@ -16,6 +16,11 @@ router.get(
   projecttaskController.getProjectTasks
 );
 router.get("/:id", verifyAccessToken, projecttaskController.getProjectTask);
+router.get(
+  "/tasks/:uId",
+  verifyAccessToken,
+  projecttaskController.getAllProjectTasksOfUser
+);
 router.put(
   "/update/:id",
   verifyAccessToken,

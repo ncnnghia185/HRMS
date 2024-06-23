@@ -97,6 +97,7 @@ exports.validateProjectTask = (data) => {
     description: Joi.string().required(),
     project_id: Joi.number().required(),
     task_status_id: Joi.number().required(),
+    user_id: Joi.number(),
   });
   return validateData(schema, data);
 };

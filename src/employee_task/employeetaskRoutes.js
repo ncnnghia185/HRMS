@@ -23,6 +23,11 @@ router.get(
   verifyAccessToken,
   employeetaskController.selectEmployeeTask
 );
+router.get(
+  "/user-tasks/:uId",
+  verifyAccessToken,
+  employeetaskController.selectAllTaskOfUser
+);
 router.put(
   "/update/:tId",
   verifyAccessToken,

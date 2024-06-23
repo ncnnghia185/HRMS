@@ -25,6 +25,14 @@ const selectOneTaskEmployee = async (taskId) => {
   return result.rows[0];
 };
 
+const selectTasksOfEmployee = async (userId) => {
+  const condition = parseInt(userId);
+  const result = await dbConfig.query(
+    `SELECT * FROM employee_task WHERE user_id = $1`,
+    [condition]
+  );
+  return result.rows;
+};
 const selectAllEmployeeTask = async () => {
   const result = await dbConfig.query("SELECT * FROM employee_task");
   return result.rows;
@@ -48,6 +56,7 @@ module.exports = {
   insertEmployeeTask,
   selectOneTaskEmployee,
   selectAllEmployeeTask,
+  selectTasksOfEmployee,
   updateEmployeeTask,
   deleteEmployeeTask,
 };

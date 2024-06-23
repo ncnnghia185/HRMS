@@ -1530,6 +1530,77 @@ paths:
       tags:
         - Tasks APIs
 
+  /api/project-task/tasks/{uId}:
+    get:
+      summary: "Get information of all tasks employee joined"
+      parameters:
+        - name: uId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Id of employee
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      description:
+                        type: string
+                      name:
+                        type: string
+                      project_id:
+                        type: integer
+                      task_status_id:
+                        type: integer
+                      user_id:
+                        type: integer
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+        
+      tags:
+        - Tasks APIs
 
 # Roles APIs
   /api/roles/all-roles:
@@ -2226,7 +2297,7 @@ paths:
       tags:
         - Project_Employee APIs  
 
-  /api/project-employee/{id}:
+  /api/project-employee/tasks/{id}:
      get:
       summary: "Get all projects employee joined"
       parameters:
@@ -2474,6 +2545,7 @@ paths:
 
       tags:
         - Project_Employee APIs  
+
 # Clients APIs
   /api/clients/add-client:
      post:
@@ -4565,6 +4637,72 @@ paths:
       tags:
         - Employee_Task APIs 
 
+  /api/employee-task/user-tasks/{uId}:
+    get:
+      summary: "Get all tasks employee joined"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: Id of employee
+      security:
+        - bearerToken: []
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        task_id:
+                          type: integer
+                        user_id:
+                          type: integer
+                      
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+      
+      tags:
+        - Employee_Task APIs   
 components:
   securitySchemes:
     bearerToken:

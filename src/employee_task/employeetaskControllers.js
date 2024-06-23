@@ -29,6 +29,15 @@ const selectAllEmployeeTask = async (req, res) => {
   }
 };
 
+const selectAllTaskOfUser = async (req, res) => {
+  try {
+    const { uId } = req.params;
+    const result = await employeetaskService.selectTasksOfEmployee(uId);
+    successResponse(res, result);
+  } catch (error) {
+    failResponse(res, error);
+  }
+};
 const updateEmployeeTask = async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,6 +62,7 @@ module.exports = {
   createEmployeeTask,
   selectEmployeeTask,
   selectAllEmployeeTask,
+  selectAllTaskOfUser,
   updateEmployeeTask,
   deleteEmployeeTask,
 };

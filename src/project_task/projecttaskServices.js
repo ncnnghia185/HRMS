@@ -9,8 +9,14 @@ const { updateQuery } = require("../../utils/handleQuery");
 const insertNewProjectTask = async (data) => {
   const value = validateProjectTask(data);
   const result = await dbConfig.query(
-    "INSERT INTO project_task(description,name,project_id,task_status_id) VALUES($1,$2,$3,$4) RETURNING *",
-    [value.description, value.name, value.project_id, value.task_status_id]
+    "INSERT INTO project_task(description,name,project_id,task_status_id,user_id) VALUES($1,$2,$3,$4,$5) RETURNING *",
+    [
+      value.description,
+      value.name,
+      value.project_id,
+      value.task_status_id,
+      value.user_id,
+    ]
   );
   return result.rows[0];
 };
@@ -33,9 +39,18 @@ const selectAllProjectTasks = async () => {
   return result.rows;
 };
 
+const selectProjectTaskOfUser = async (userId) => {
+  const condition = parseInt(userId);
+  const result = await dbConfig.query(
+    `SELECT * FROM project_task WHERE user_id = $1`,
+    [condition]
+  );
+
+  return result.rows;
+};
 const updateOneProjectTask = async (data, id) => {
   checkUpdateData(data);
-  const baseQuery = `UPDATE projects SET `;
+  const baseQuery = `UPDATE project_task SET `;
   const sqlQuery = updateQuery(baseQuery, id, data);
   const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
 
@@ -50,6 +65,7 @@ module.exports = {
   insertNewProjectTask,
   selectOneProjectTask,
   selectAllProjectTasks,
+  selectProjectTaskOfUser,
   updateOneProjectTask,
   deleteOneProjectTask,
 };
