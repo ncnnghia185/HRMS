@@ -1,14 +1,6 @@
 const { successResponse, failResponse } = require("../../utils/apiResponse");
 const projectService = require("./projectServices");
-const cloudinary = require("cloudinary").v2;
-require("dotenv").config();
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
+const { cloudinary } = require("../../config/cloudinaryConfig");
 const createProject = async (req, res) => {
   const { client_id, description, title } = req.body;
   const thumbnailPath = req.file.path;

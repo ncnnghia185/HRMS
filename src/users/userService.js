@@ -17,8 +17,8 @@ const insertUser = async (data) => {
   const hashed = await hashPassword(value.password);
 
   const result = await dbConfig.query(
-    `INSERT INTO employees (name, address, birthday, email, phone, role_id, password, department_id) 
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8) `,
+    `INSERT INTO employees (name, address, birthday, email, phone, role_id, password, department_id,avatar) 
+     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) `,
     [
       value.name,
       value.address,
@@ -28,6 +28,8 @@ const insertUser = async (data) => {
       value.role_id,
       hashed,
       value.department_id,
+      value.avatar ||
+        "https://res.cloudinary.com/dn1etgdhn/image/upload/v1719134981/default_avatar_fixrns.jpg",
     ]
   );
   return result.rows[0];

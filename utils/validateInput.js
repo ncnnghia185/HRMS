@@ -19,6 +19,7 @@ exports.validateUser = (data) => {
     birthday: Joi.date().required(),
     phone: Joi.string().required(),
     department_id: Joi.number(),
+    avatar: Joi.string(),
   });
 
   return validateData(schema, data);
@@ -69,6 +70,7 @@ exports.validateClient = (data) => {
     phone: Joi.string().required(),
     position: Joi.string().required(),
     projects: Joi.string().required(),
+    avatar: Joi.string(),
   });
 
   return validateData(schema, data);

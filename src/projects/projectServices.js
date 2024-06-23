@@ -20,7 +20,7 @@ const selectOneProject = async (id) => {
     `SELECT p.*, pp.name 
      FROM projects p 
      LEFT JOIN project_priority pp 
-     ON p.priority_id = pp.id 
+     ON p.priority_id = pp.id  
      WHERE p.id = $1`,
     [condition]
   );

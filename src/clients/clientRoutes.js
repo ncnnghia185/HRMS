@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const clientController = require("./clientControllers");
+const { upload } = require("../../config/cloudinaryConfig");
 const {
   verifyAccessToken,
   checkRole,
@@ -8,6 +9,7 @@ router.post(
   "/add-client",
   verifyAccessToken,
   checkRole("ADMIN"),
+  upload.single("avatar"),
   clientController.createClient
 );
 router.get(

@@ -4,10 +4,12 @@ const {
   verifyAccessToken,
   checkRole,
 } = require("../../middlewares/verifyToken");
+const { upload } = require("../../config/cloudinaryConfig");
 router.post(
   "/add",
   verifyAccessToken,
   checkRole("ADMIN"),
+  upload.single("avatar"),
   employeeController.createEmployee
 );
 router.get(

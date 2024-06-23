@@ -1,9 +1,35 @@
 const userService = require("./userService");
 const { successResponse, failResponse } = require("../../utils/apiResponse");
-
+const { cloudinary } = require("../../config/cloudinaryConfig");
 const createNewUser = async (req, res) => {
+  const {
+    name,
+    address,
+    birthday,
+    email,
+    phone,
+    role_id,
+    password,
+    department_id,
+  } = req.body;
+  const avatarPath = req.file.path;
   try {
-    const newUser = await userService.insertUser(req.body);
+    const uploadResult = await cloudinary.uploader.upload(avatarPath, {
+      folder: "employees_avatar",
+    });
+    const avatarUrl = uploadResult.secure_url;
+    const employeeData = {
+      name,
+      address,
+      birthday,
+      email,
+      phone,
+      role_id,
+      password,
+      department_id,
+      avatar: avatarUrl,
+    };
+    const newUser = await userService.insertUser(employeeData);
     successResponse(res, newUser);
   } catch (error) {
     failResponse(res, error);

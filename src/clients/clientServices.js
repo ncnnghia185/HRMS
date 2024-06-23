@@ -9,7 +9,7 @@ const { updateQuery } = require("../../utils/handleQuery");
 const insertNewClient = async (data) => {
   const value = validateClient(data);
   const result = await dbConfig.query(
-    "INSERT INTO clients(company,email,name,phone,position,projects) VALUES($1,$2,$3,$4,$5,$6) RETURNING *",
+    "INSERT INTO clients(company,email,name,phone,position,projects,avatar) VALUES($1,$2,$3,$4,$5,$6,$7) RETURNING *",
     [
       value.company,
       value.email,
@@ -17,6 +17,8 @@ const insertNewClient = async (data) => {
       value.phone,
       value.position,
       value.projects,
+      value.avatar ||
+        "https://res.cloudinary.com/dn1etgdhn/image/upload/v1719134981/default_avatar_fixrns.jpg",
     ]
   );
   return result.rows[0];

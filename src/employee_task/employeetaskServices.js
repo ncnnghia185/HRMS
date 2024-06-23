@@ -8,6 +8,7 @@ const { updateQuery } = require("../../utils/handleQuery");
 
 const insertEmployeeTask = async (data) => {
   const value = validateEmployeeTask(data);
+
   const result = await dbConfig.query(
     "INSERT INTO employee_task VALUES($1,$2) RETURNING *",
     [value.task_id, value.user_id]

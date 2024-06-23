@@ -1,9 +1,24 @@
 const { successResponse, failResponse } = require("../../utils/apiResponse");
 const clientService = require("./clientServices");
-
+const { cloudinary } = require("../../config/cloudinaryConfig");
 const createClient = async (req, res) => {
+  const { company, email, name, phone, position, projects } = req.body;
+  const avatarPath = req.file.path;
   try {
-    const client = await clientService.insertNewClient(req.body);
+    const uploadResult = await cloudinary.uploader.upload(avatarPath, {
+      folder: "clients_avatar",
+    });
+    const avatarUrl = uploadResult.secure_url;
+    const clientData = {
+      company,
+      email,
+      name,
+      phone,
+      position,
+      projects,
+      avatar: avatarUrl,
+    };
+    const client = await clientService.insertNewClient(clientData);
     successResponse(res, client);
   } catch (error) {
     failResponse(res, error);

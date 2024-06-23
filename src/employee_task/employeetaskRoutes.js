@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const employeetaskController = require("./employeetaskControllers");
+const { upload } = require("../../config/cloudinaryConfig");
 const {
   verifyAccessToken,
   checkRole,
@@ -9,6 +10,7 @@ router.post(
   "/add-user",
   verifyAccessToken,
   checkRole("ADMIN"),
+  upload.single("avatar"),
   employeetaskController.createEmployeeTask
 );
 router.get(

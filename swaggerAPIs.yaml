@@ -28,7 +28,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
@@ -59,6 +59,10 @@ paths:
                 department_id:
                   type: integer
                   description: ID of the user's department
+                avatar:
+                  type: string
+                  format: binary
+                  description: User Avatar File
               required:
                 - name
                 - address
@@ -2478,7 +2482,7 @@ paths:
       requestBody:
         required: true
         content:
-          application/json:
+          multipart/form-data:
             schema:
               type: object
               properties:
@@ -2495,6 +2499,10 @@ paths:
                   type: string
                 projects:
                   type: string
+                avatar:
+                  type: string
+                  format: binary
+                  description: Client Avatar File
               required:
                 - company
                 - email
@@ -2533,6 +2541,8 @@ paths:
                       position:
                         type: string
                       projects:
+                        type: string
+                      avatar:
                         type: string
         '400':
           description: Failed .
