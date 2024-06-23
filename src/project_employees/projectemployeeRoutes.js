@@ -15,7 +15,6 @@ router.post(
 router.get(
   "/all",
   verifyAccessToken,
-  checkRole("ADMIN"),
   projectemployeeController.selectProjectEmployees
 );
 

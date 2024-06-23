@@ -18,7 +18,6 @@ router.post(
 router.get(
   "/all-projects",
   verifyAccessToken,
-  checkRole("ADMIN"),
   projectController.selectProjects
 );
 
