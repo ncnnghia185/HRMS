@@ -50,9 +50,9 @@ const updateEmployeeTask = async (req, res) => {
 
 const deleteEmployeeTask = async (req, res) => {
   try {
-    const { tId } = req.params;
-    const uId = req.body;
-    await employeetaskService.deleteEmployeeTask(tId, uId.uId);
+    const { tId, uId } = req.params;
+
+    await employeetaskService.deleteEmployeeTask(tId, uId);
     successResponse(res);
   } catch (error) {
     failResponse(res, error);

@@ -32,7 +32,7 @@ router.put(
   projectemployeeController.updateProjectEmployee
 );
 router.delete(
-  "/:id",
+  "/delete/:pId/:uId",
   verifyAccessToken,
   checkRole(ROLES.ADMIN),
   projectemployeeController.deleteProjectEmployee

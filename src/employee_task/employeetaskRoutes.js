@@ -36,7 +36,7 @@ router.put(
   employeetaskController.updateEmployeeTask
 );
 router.delete(
-  "/:tId",
+  "/delete/:tId/:uId",
   verifyAccessToken,
   checkRole(ROLES.ADMIN),
   employeetaskController.deleteEmployeeTask

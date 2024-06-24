@@ -51,9 +51,9 @@ const updateProjectEmployee = async (req, res) => {
 
 const deleteProjectEmployee = async (req, res) => {
   try {
-    const { id } = req.params;
-    const uId = req.body;
-    await projectemployeeService.deleteProjectEmployee(id, uId.uId);
+    const { pId, uId } = req.params;
+
+    await projectemployeeService.deleteProjectEmployee(pId, uId);
     successResponse(res);
   } catch (error) {
     failResponse(res, error);

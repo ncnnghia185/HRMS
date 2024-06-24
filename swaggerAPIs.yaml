@@ -2369,29 +2369,26 @@ paths:
       tags:
         - Project_Employee APIs   
 
-     delete:
+  /api/project-employee/delete/{pId}/{uId}:
+    delete:
       summary: Delete a user from a project
       description: Deletes a specific user from a project.
       parameters:
-        - name: projectId
+        - name: pId
           in: path
           required: true
           description: ID of the project
           schema:
             type: integer
+        - name: uId
+          in: path
+          required: true
+          description: ID of the user to delete from the project
+          schema:
+            type: integer
       security:
         - bearerToken: []  
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                uId:
-                  type: integer
-              required:
-                - uId
+      
       responses:
         '200':
           description: "Successfully"
@@ -2446,7 +2443,7 @@ paths:
                   message:
                     type: string 
       tags:
-        - Project_Employee APIs      
+        - Project_Employee APIs         
 
   /api/project-employee/update/{id}:
     put:
@@ -4490,82 +4487,7 @@ paths:
       tags:
         - Employee_Task APIs
 
-    delete:
-      summary: Delete a user from a task
-      description: Deletes a specific user from a  task.
-      parameters:
-        - name: taskId
-          in: path
-          required: true
-          description: ID of the task
-          schema:
-            type: integer
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                uId:
-                  type: integer
-              required:
-                - uId
-      responses:
-        '200':
-          description: "Successfully"
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: true
-                  message:
-                    type: string
-                    example: "Success"
-        '400':
-          description: "Failed."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-                    example: "Failed"
-                  error:
-                    type: string
-        '401':
-          description: "Required Authentication. Access token is missing or invalid."
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string
-        '403':
-          description: Forbidden. User does not have the required permissions.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  success:
-                    type: boolean
-                    example: false
-                  message:
-                    type: string 
-      tags:
-        - Employee_Task APIs
+   
 
 
   /api/employee-task/all:
@@ -4640,6 +4562,78 @@ paths:
       tags:
         - Employee_Task APIs 
 
+  /api/employee-task/delete/{tId}/{uId}:
+     delete:
+      summary: Delete a user from a task
+      description: Deletes a specific user from a  task.
+      parameters:
+        - name: taskId
+          in: path
+          required: true
+          description: ID of the task
+          schema:
+            type: integer
+        - name: uId
+          in: path
+          required: true
+          description: ID of the user to delete from the task
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: "Successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: "Success"
+        '400':
+          description: "Failed."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+                    example: "Failed"
+                  error:
+                    type: string
+        '401':
+          description: "Required Authentication. Access token is missing or invalid."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string
+        '403':
+          description: Forbidden. User does not have the required permissions.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: false
+                  message:
+                    type: string 
+      tags:
+        - Employee_Task APIs
   /api/employee-task/user-tasks/{uId}:
     get:
       summary: "Get all tasks employee joined"
