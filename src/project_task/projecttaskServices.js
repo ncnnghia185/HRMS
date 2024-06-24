@@ -25,6 +25,7 @@ const insertNewProjectTask = async (data, roleId, userId) => {
 
   if (roleId === 2) {
     const condition = parseInt(value.user_id);
+
     const project_id = await dbConfig.query(
       `SELECT DISTINCT project_id FROM project_task WHERE user_id = $1`,
       [userId]
@@ -36,7 +37,6 @@ const insertNewProjectTask = async (data, roleId, userId) => {
       `SELECT role_id FROM employees WHERE id = $1`,
       [condition]
     );
-    console.log("check r_o_e", role_of_employee.rows[0]);
 
     const PmProjectsId = project_id.rows.map((item) => item.project_id);
     if (value.project_id && !PmProjectsId.includes(value.project_id)) {
@@ -44,8 +44,17 @@ const insertNewProjectTask = async (data, roleId, userId) => {
         "You do not have permission to add members to projects you have not joined"
       );
     }
+
+    if (
+      roleId === role_of_employee.rows[0].role_id ||
+      role_of_employee.rows[0].role_id === 1
+    ) {
+      throw new Error(
+        "You do not have permission to add ADMIN or another PM to this project"
+      );
+    }
     const result = await dbConfig.query(
-      `INSERT INTO project_task (description, name, project_id, task_status_id, user_id) 
+      `INSERT INTO project_task (description, name, project_id, task_status_id, user_id)
       VALUES ($1, $2, $3, $4, $5) RETURNING *`,
       [
         value.description,
