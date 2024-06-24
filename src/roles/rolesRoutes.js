@@ -2,19 +2,20 @@ const router = require("express").Router();
 const {
   verifyAccessToken,
   checkRole,
+  ROLES,
 } = require("../../middlewares/verifyToken");
 const rolesControllers = require("./rolesControllers");
 
 router.get(
   "/all-roles",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   rolesControllers.getAllRoles
 );
 router.get(
   "/:rId",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   rolesControllers.getOneRole
 );
 

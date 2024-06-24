@@ -3,6 +3,7 @@ const departmenrController = require("./departmentControllers");
 const {
   verifyAccessToken,
   checkRole,
+  ROLES,
 } = require("../../middlewares/verifyToken");
 router.get(
   "/all-departments",
@@ -13,19 +14,19 @@ router.get("/:id", verifyAccessToken, departmenrController.selectDepartment);
 router.post(
   "/add-department",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   departmenrController.createDepartment
 );
 router.put(
   "/update/:id",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   departmenrController.updateDepartment
 );
 router.delete(
   "/:id",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   departmenrController.deleteDepartment
 );
 module.exports = router;

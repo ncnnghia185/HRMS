@@ -4,12 +4,13 @@ const { upload } = require("../../config/cloudinaryConfig");
 const {
   verifyAccessToken,
   checkRole,
+  ROLES,
 } = require("../../middlewares/verifyToken");
 
 router.post(
   "/add-user",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   upload.single("avatar"),
   employeetaskController.createEmployeeTask
 );
@@ -36,7 +37,7 @@ router.put(
 router.delete(
   "/:tId",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   employeetaskController.deleteEmployeeTask
 );
 module.exports = router;

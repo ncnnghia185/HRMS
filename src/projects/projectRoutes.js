@@ -10,7 +10,7 @@ const {
 router.post(
   "/add-project",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   upload.single("thumbnail"),
   projectController.createProject
 );
@@ -26,14 +26,14 @@ router.get("/:id", verifyAccessToken, projectController.selectProject);
 router.put(
   "/update/:id",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   projectController.updateProject
 );
 
 router.delete(
   "/:id",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   projectController.deleteProject
 );
 module.exports = router;

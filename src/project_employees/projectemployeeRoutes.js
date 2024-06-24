@@ -1,6 +1,7 @@
 const {
   verifyAccessToken,
   checkRole,
+  ROLES,
 } = require("../../middlewares/verifyToken");
 const router = require("express").Router();
 const projectemployeeController = require("./projectemployeeControllers");
@@ -27,13 +28,13 @@ router.get(
 router.put(
   "/update/:id",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   projectemployeeController.updateProjectEmployee
 );
 router.delete(
   "/:id",
   verifyAccessToken,
-  checkRole("ADMIN"),
+  checkRole(ROLES.ADMIN),
   projectemployeeController.deleteProjectEmployee
 );
 module.exports = router;

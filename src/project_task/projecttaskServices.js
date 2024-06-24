@@ -24,6 +24,7 @@ const insertNewProjectTask = async (data, roleId, userId) => {
   }
 
   if (roleId === 2) {
+    const condition = parseInt(value.user_id);
     const project_id = await dbConfig.query(
       `SELECT DISTINCT project_id FROM project_task WHERE user_id = $1`,
       [userId]
@@ -31,9 +32,17 @@ const insertNewProjectTask = async (data, roleId, userId) => {
     if (project_id.rows.length === 0) {
       throw new Error("You have not been added to any projects yet");
     }
+    const role_of_employee = await dbConfig.query(
+      `SELECT role_id FROM employees WHERE id = $1`,
+      [condition]
+    );
+    console.log("check r_o_e", role_of_employee.rows[0]);
+
     const PmProjectsId = project_id.rows.map((item) => item.project_id);
-    if (!PmProjectsId.includes(value.project_id)) {
-      throw new Error("You not have permission to add member to this project");
+    if (value.project_id && !PmProjectsId.includes(value.project_id)) {
+      throw new Error(
+        "You do not have permission to add members to projects you have not joined"
+      );
     }
     const result = await dbConfig.query(
       `INSERT INTO project_task (description, name, project_id, task_status_id, user_id) 
@@ -41,7 +50,7 @@ const insertNewProjectTask = async (data, roleId, userId) => {
       [
         value.description,
         value.name,
-        project_id.rows[0].project_id,
+        value.project_id,
         value.task_status_id,
         value.user_id,
       ]
@@ -90,7 +99,6 @@ const updateOneProjectTask = async (data, id, roleId, userId) => {
   const prj_id_by_id = await dbConfig.query(
     `SELECT project_id FROM project_task WHERE id = id`
   );
-  console.log("check prj_id", prj_id.rows[0]);
 
   const project_id_by_user = await dbConfig.query(
     `SELECT DISTINCT project_id FROM project_task WHERE user_id = $1`,
@@ -102,13 +110,14 @@ const updateOneProjectTask = async (data, id, roleId, userId) => {
   }
 
   const PmProjectsId = project_id_by_user.rows.map((item) => item.project_id);
-  if (
-    !PmProjectsId.includes(value.project_id) ||
-    !PmProjectsId.includes(prj_id_by_id.rows[0].project_id)
-  ) {
-    throw new Error("You not have permission to add member to this project");
-  }
+
   if (roleId === 2) {
+    if (
+      (data.project_id && !PmProjectsId.includes(data.project_id)) ||
+      !PmProjectsId.includes(prj_id_by_id.rows[0].project_id)
+    ) {
+      throw new Error("You not have permission to add member to this project");
+    }
     const baseQuery = `UPDATE project_task SET `;
     const sqlQuery = updateQuery(baseQuery, id, data);
     const result = await dbConfig.query(sqlQuery.query, sqlQuery.values);
@@ -117,6 +126,12 @@ const updateOneProjectTask = async (data, id, roleId, userId) => {
   }
 
   if (roleId === 3) {
+    if (
+      (data.project_id && !PmProjectsId.includes(data.project_id)) ||
+      !PmProjectsId.includes(prj_id_by_id.rows[0].project_id)
+    ) {
+      throw new Error("You not have permission to add member to this project");
+    }
     if (
       Object.keys(data).length !== 1 ||
       !data.hasOwnProperty("task_status_id")
