@@ -2698,7 +2698,8 @@ paths:
                           type: string
                         projects:
                           type: array
-                          items: string
+                          items: 
+                            type: string
                         
         '400':
           description: Failed.
@@ -2790,7 +2791,8 @@ paths:
                           type: string
                         projects:
                           type: array
-                          items: string
+                          items: 
+                            type: string
                       
         '400':
           description: "Failed."
