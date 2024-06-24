@@ -4672,6 +4672,8 @@ paths:
                           type: integer
                         user_id:
                           type: integer
+                        task_name:
+                          type: string
                       
         '400':
           description: "Failed."

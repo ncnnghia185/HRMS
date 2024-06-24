@@ -35,10 +35,10 @@ const ROLES = {
   PM: 2,
   MEMBER: 3,
 };
-const checkRole = (roleKey) => {
+const checkRole = (...allowedRoles) => {
   return (req, res, next) => {
-    const role = ROLES[roleKey];
-    if (req.user.role_id !== role) {
+    const userRole = req.user.role_id;
+    if (!allowedRoles.includes(userRole)) {
       return res.status(403).json({
         success: false,
         message: "Access denied : Insufficient permissions",

@@ -2,8 +2,14 @@ const { failResponse, successResponse } = require("../../utils/apiResponse");
 const projecttaskServices = require("./projecttaskServices");
 
 const createProjectTask = async (req, res) => {
+  const role_id = req.user.role_id;
+  const user_id = req.user.id;
   try {
-    const result = await projecttaskServices.insertNewProjectTask(req.body);
+    const result = await projecttaskServices.insertNewProjectTask(
+      req.body,
+      role_id,
+      user_id
+    );
     successResponse(res, result);
   } catch (error) {
     failResponse(res, error);
@@ -30,19 +36,31 @@ const getProjectTasks = async (req, res) => {
 };
 
 const getAllProjectTasksOfUser = async (req, res) => {
+  const role_id = req.user.role_id;
+  const uId = req.user.id;
   try {
-    const { uId } = req.params;
-    const result = await projecttaskServices.selectProjectTaskOfUser(uId);
+    const uId = req.user.id;
+    const result = await projecttaskServices.selectProjectTaskOfUser(
+      uId,
+      role_id
+    );
     successResponse(res, result);
   } catch (error) {
     failResponse(res, error);
   }
 };
 const updateProjectTask = async (req, res) => {
+  const role_id = req.user.role_id;
+  const user_id = req.user.id;
   try {
     const { id } = req.params;
     const data = req.body;
-    const result = await projecttaskServices.updateOneProjectTask(data, id);
+    const result = await projecttaskServices.updateOneProjectTask(
+      data,
+      id,
+      role_id,
+      user_id
+    );
     successResponse(res, result);
   } catch (error) {
     failResponse(res, error);

@@ -5,6 +5,7 @@ const {
 } = require("../../utils/handleQuery");
 const { validateProject } = require("../../utils/validateInput");
 const { updateQuery } = require("../../utils/handleQuery");
+
 const insertNewProject = async (data) => {
   const value = validateProject(data);
   const project = await dbConfig.query(

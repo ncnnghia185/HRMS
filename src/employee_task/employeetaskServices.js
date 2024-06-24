@@ -28,7 +28,7 @@ const selectOneTaskEmployee = async (taskId) => {
 const selectTasksOfEmployee = async (userId) => {
   const condition = parseInt(userId);
   const result = await dbConfig.query(
-    `SELECT * FROM employee_task WHERE user_id = $1`,
+    `select et.*, pt.name as task_name from employee_task et inner join project_task pt on et.task_id = pt.id and et.user_id = $1`,
     [condition]
   );
   return result.rows;
