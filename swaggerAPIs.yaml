@@ -1537,8 +1537,7 @@ paths:
       summary: "Get information of all tasks employee joined"
       parameters:
         - name: uId
-          in: path
-          required: true
+          
           schema:
             type: integer
           description: Id of employee
@@ -2299,7 +2298,7 @@ paths:
       tags:
         - Project_Employee APIs  
 
-  /api/project-employee/tasks/{id}:
+  /api/project-employee/{id}:
      get:
       summary: "Get all projects employee joined"
       parameters:
@@ -2701,7 +2700,8 @@ paths:
                         position:
                           type: string
                         projects:
-                          type: string
+                          type: array
+                          items: string
                         
         '400':
           description: Failed.
@@ -2792,7 +2792,8 @@ paths:
                         position:
                           type: string
                         projects:
-                          type: string
+                          type: array
+                          items: string
                       
         '400':
           description: "Failed."

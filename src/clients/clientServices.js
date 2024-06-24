@@ -30,13 +30,31 @@ const selectOneClient = async (id) => {
     condition,
   ]);
   checkExistResult(result.rows);
-  return result.rows[0];
+  const projects_of_client = result.rows[0].projects.split(",");
+  const data = {
+    company: result.rows[0].company,
+    email: result.rows[0].email,
+    id: result.rows[0].id,
+    name: result.rows[0].name,
+    phone: result.rows[0].phone,
+    position: result.rows[0].position,
+    projects: projects_of_client,
+    avatar: result.rows[0].avatar,
+  };
+  return data;
 };
 
 const selectAllClients = async () => {
   const result = await dbConfig.query("SELECT * FROM clients ORDER BY id ASC");
   checkExistResult(result.rows);
-  return result.rows;
+  const data = result.rows.map((item) => {
+    return {
+      ...item,
+      projects: item.projects.split(","),
+    };
+  });
+
+  return data;
 };
 
 const updateOneClient = async (data, id) => {
