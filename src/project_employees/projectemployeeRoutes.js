@@ -28,7 +28,7 @@ router.get(
 router.put(
   "/update/:id",
   verifyAccessToken,
-  checkRole(ROLES.ADMIN),
+  checkRole(ROLES.ADMIN, ROLES.PM),
   projectemployeeController.updateProjectEmployee
 );
 router.delete(

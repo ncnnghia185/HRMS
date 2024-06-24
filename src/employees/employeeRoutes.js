@@ -20,7 +20,12 @@ router.get(
   employeeController.selectEmployees
 );
 router.get("/:id", verifyAccessToken, employeeController.selectEmployee);
-router.put("/update/:id", verifyAccessToken, employeeController.updateEmployee);
+router.put(
+  "/update/:id",
+  verifyAccessToken,
+  checkRole(ROLES.ADMIN),
+  employeeController.updateEmployee
+);
 router.delete(
   "/:id",
   verifyAccessToken,

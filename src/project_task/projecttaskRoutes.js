@@ -34,7 +34,7 @@ router.put(
 router.delete(
   "/:id",
   verifyAccessToken,
-  checkRole(ROLES.ADMIN),
+  checkRole(ROLES.ADMIN, ROLES.PM, ROLES.MEMBER),
   projecttaskController.deleteProjectTask
 );
 
