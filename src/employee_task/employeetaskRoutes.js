@@ -32,6 +32,7 @@ router.get(
 router.put(
   "/update/:tId",
   verifyAccessToken,
+  checkRole(ROLES.ADMIN),
   employeetaskController.updateEmployeeTask
 );
 router.delete(
